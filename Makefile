@@ -15,13 +15,13 @@ PYSRC = $(wildcard test/meta/gen*.py)
 
 SRCS = $(wildcard test/*.cpp)
 
-PROGS = $(patsubst %.cpp,%,$(SRCS))
+PROGS = $(patsubst %.cpp,%.out,$(SRCS))
 
 
 
 all: $(PROGS)
 
-%: %.cpp
+%.out: %.cpp
 	$(CC) $(LDFLAGSX) $(CFLAGSX) $(GTEST_LIB)/gtest_main.a -o $@ $<
 
 
