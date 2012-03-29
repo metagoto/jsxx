@@ -1,0 +1,6 @@
+build.sh
+jsxx.*
+*.out
+*.o
+callgrind.out.*
+__pycache__
