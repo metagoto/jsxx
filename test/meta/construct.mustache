@@ -1,15 +1,12 @@
 
 #include <gtest/gtest.h>
 
-#include <jsxx/basic_val.hpp>
-#include <jsxx/traits/simple.hpp>
-#include <jsxx/print.hpp>
-#include <jsxx/literal_key.hpp>
+#include <jsxx/val.hpp>
+#include <jsxx/val/literal_key.hpp>
 
 
 using namespace jsxx;
 
-typedef basic_val<tag::simple> val;
 typedef val::k k;
 
 

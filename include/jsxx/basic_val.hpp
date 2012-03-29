@@ -6,10 +6,9 @@
 #include <algorithm>
 #include <stdexcept>
 
-#include <jsxx/detail/enable_if.hpp>
-
-#include <jsxx/fw.hpp>
 #include <jsxx/type.hpp>
+#include <jsxx/detail/enable_if.hpp>
+#include <jsxx/detail/basic_val_fw.hpp>
 #include <jsxx/detail/operator.hpp>
 #include <jsxx/detail/iterator.hpp>
 

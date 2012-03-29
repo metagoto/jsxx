@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include <jsxx/detail/basic_val_fw.hpp>
+
 
 namespace jsxx
 {

@@ -19,7 +19,7 @@ PROGS = $(patsubst %.cpp,%.out,$(SRCS))
 
 
 
-all: $(PROGS)
+all: $(PROGS) demo
 
 %.out: %.cpp
 	$(CC) $(LDFLAGSX) $(CFLAGSX) $(GTEST_LIB)/gtest_main.a -o $@ $<
@@ -36,8 +36,13 @@ test: autogen all
 	  ./$$p  --gtest_color=yes; \
 	done;
 
+demo: demo/demo.out
+
+demo/demo.out: demo/demo.cpp
+	$(CC) $(LDFLAGSX) $(CFLAGSX) -o $@ $<
+
 clean:
 	rm -f test/*.o $(PROGS)
 
-.PHONY: clean test
+.PHONY: clean test example
 

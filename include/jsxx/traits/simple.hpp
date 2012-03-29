@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+#include <jsxx/detail/traits_fw.hpp>
 
 namespace jsxx
 {

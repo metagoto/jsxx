@@ -1,8 +1,44 @@
 #pragma once
 
+#include <jsxx/detail/basic_val_fw.hpp>
+
 
 namespace jsxx
 {
+
+    ////
+    template<typename R, typename T>
+    R& get(basic_val<T>&);
+
+    template<typename R, typename T>
+    R const& get(basic_val<T> const&);
+
+    template<typename R, typename T>
+    R* get(basic_val<T>*);
+
+    template<typename R, typename T>
+    R const* get(basic_val<T> const*);
+
+
+    template<typename T, typename U>
+    bool operator==(basic_val<T> const&, U const&);
+
+    template<typename T, typename U>
+    bool operator==(U const&, basic_val<T> const&);
+
+    template<typename T>
+    bool operator==(basic_val<T> const&, null_type);
+
+    template<typename T>
+    bool operator==(null_type, basic_val<T> const&);
+
+    template<typename T, typename U>
+    bool operator!=(basic_val<T> const&, U const&);
+
+    template<typename T, typename U>
+    bool operator!=(U const&, basic_val<T> const&);
+    ////
+
 
 
     namespace detail
