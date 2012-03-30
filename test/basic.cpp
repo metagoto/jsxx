@@ -178,72 +178,73 @@ TEST(test2, stuff)
         val const cjo = jo;
         val const cja = ja;
 
-//        for (auto v : ja) {
-//            //PRINT(v);
-//            //v == v;
-//            //int a = 3; (void)a;
-//        }
+        for (auto v : ja) {
+            //PRINT(v);
+            //v == v;
+            //int a = 3; (void)a;
+        }
 
-//        for (val& v : ja) {
-//            //PRINT(v);
-//            v == v;
-//        }
+        for (val& v : ja) {
+            //PRINT(v);
+            v == v;
+        }
 
-//        for (val const& v : ja) {
-//            //PRINT(v);
-//            v == v;
-//        }
+        for (val const& v : ja) {
+            //PRINT(v);
+            v == v;
+        }
 
-//        const_iterator cit = begin(cja);
-//        const_iterator cit2 = begin(ja);
-//        iterator it = begin(ja);
-//        const_iterator cit3 = it;
-//        //iterator it2 = begin(cja); // error const -> non const
+        const_iterator cit = begin(cja);
+        const_iterator cit2 = begin(ja);
+        iterator it = begin(ja);
+        const_iterator cit3 = it;
+        //iterator it2 = begin(cja); // error const -> non const
 
-//        {
-//            const_iterator cit = begin(cjo);
-//            const_iterator cit2 = begin(jo);
-//            iterator it = begin(jo);
-//            const_iterator cit3 = it;
-//        }
+        {
+            const_iterator cit = begin(cjo);
+            const_iterator cit2 = begin(jo);
+            iterator it = begin(jo);
+            const_iterator cit3 = it;
+        }
 
-//        EXPECT_NE(begin(ja), end(ja));
-//        EXPECT_TRUE(begin(ja) != end(ja));
-//        EXPECT_EQ(end(ja), end(ja));
-//        EXPECT_TRUE(end(ja) == end(ja));
+        EXPECT_NE(begin(ja), end(ja));
+        EXPECT_TRUE(begin(ja) != end(ja));
+        EXPECT_EQ(end(ja), end(ja));
+        EXPECT_TRUE(end(ja) == end(ja));
 
-//        EXPECT_NE(begin(jo), end(jo));
-//        EXPECT_TRUE(begin(jo) != end(jo));
-//        EXPECT_EQ(end(jo), end(jo));
-//        EXPECT_TRUE(end(jo) == end(jo));
+        EXPECT_NE(begin(jo), end(jo));
+        EXPECT_TRUE(begin(jo) != end(jo));
+        EXPECT_EQ(end(jo), end(jo));
+        EXPECT_TRUE(end(jo) == end(jo));
 
-//        std::for_each(begin(cjo), end(cjo), [](val const& v){
-//            //(v); //PRINT(v)
-//            v == v;
-//            return;
-//        });
-//        //std::for_each(begin(cj), end(cj), [](val& v){});
-//        std::for_each(begin(cjo), end(cjo), [](val v){
-//            //(v); //PRINT(v)
-//            v == v;
-//            return;
-//        });
+        std::for_each(begin(cjo), end(cjo), [](val const& v){
+            //(v); //PRINT(v)
+            v == v;
+            return;
+        });
+        //std::for_each(begin(cj), end(cj), [](val& v){});
+        std::for_each(begin(cjo), end(cjo), [](val v){
+            //(v); //PRINT(v)
+            v == v;
+            return;
+        });
 
-//        // int i = 0;
-//        std::for_each(begin(cjo), end(cjo), [&](val const& v){
-//            //EXPECT_EQ(v, ja[i++]);
-//            v == v;
-//            return;
-//        });
+        int i = 0;
+        std::for_each(begin(cjo), end(cjo), [&](val const& v){
+            EXPECT_EQ(v, ja[i++]);
+            //v == v;
+            return;
+        });
 
-//        for (val& v : ja) {
-//            v = "str";
-//        }
-//        std::for_each(begin(ja), end(ja), [](val const& v){
-//            //EXPECT_STREQ(v, "str");
-//            v == v;
-//            return;
-//        });
+        for (val& v : ja) {
+            v = "str";
+        }
+        std::for_each(begin(ja), end(ja), [](val const& v){
+            EXPECT_STREQ(v, "str");
+            //v == v;
+            return;
+        });
+
     }
 
     {

@@ -18,7 +18,7 @@ d = {
                     "data": x( [0.0, -0.0, 0.1, 3.1415, -2.618, 123456789.1] )
                 },
                 {
-                    "name": "simple_val3",
+                    "name": "false",
                     "kind": "EXPECT_EQ",
                     "noswitch": True,
                     "data": x( ["false"] )
@@ -29,13 +29,13 @@ d = {
             "group" : "construct2",
             "test" : [
                 {
-                    "name": "simple_val",
+                    "name": "inequality",
                     "kind": "EXPECT_NE",
                     "data": x([ [0, 1], [3, 6], [3.14, 2.618]
                                ,["true", "false"], ["null", "false"] ])
                 },
                 {
-                    "name": "simple_val3",
+                    "name": "inequality2",
                     "kind": "EXPECT_NE",
                     "noswitch": True,
                     "data": x( [["false", "true"]] )
@@ -57,6 +57,21 @@ d = {
                 },
             ]
         },
+        {
+            "group" : "construct4",
+            "test" : [
+                {
+                    "name": "limits",
+                    "kind": "EXPECT_EQ",
+                    "data": x( ["std::numeric_limits<int>::max()"
+                               ,"std::numeric_limits<int>::min()"
+                               ,"std::numeric_limits<double>::max()"
+                               ,"std::numeric_limits<double>::min()" ] )
+                },
+
+            ]
+        },
+
     ]
 }
 

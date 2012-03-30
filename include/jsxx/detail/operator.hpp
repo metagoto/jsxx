@@ -56,6 +56,10 @@ namespace jsxx
         }
 
 
+        template<typename,typename>
+        struct type_to_mem;
+
+
         template<typename T>
         struct type_to_mem<T, typename T::int_type>
         {

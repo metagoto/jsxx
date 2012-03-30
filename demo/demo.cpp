@@ -32,15 +32,19 @@ int main()
     };
 
     json["new"] = string("oki doki");
-
     json["object"]["empty_obj"] = { };
-
-    json["object"]["array"][2] = true;
+    json["object"]["array"][2] = null;
     json["object"]["array"][5] = "new val";
-
-
     echo(json);
 
-    echo({ "inline"_k = true, "blah"_k = {"one","two",3} });
+    echo( {"inline"_k = true, "blah"_k = {"one","two",3}} );
+
+    for (auto& v : json)
+        echo(v);
+
+    for (val& v : json["object"]["array"])
+        v = (v.type() == val_type::integer) ? true : false;
+
+    echo(json);
 
 }

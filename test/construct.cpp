@@ -1,6 +1,7 @@
 
 #include <gtest/gtest.h>
 
+#include <limits>
 #include <jsxx/val.hpp>
 #include <jsxx/val/literal_key.hpp>
 
@@ -146,7 +147,7 @@ TEST(construct1, real)
     
 }
 
-TEST(construct1, simple_val3)
+TEST(construct1, false)
 {
     {
         val v = false;
@@ -161,7 +162,7 @@ TEST(construct1, simple_val3)
 }
 
 
-TEST(construct2, simple_val)
+TEST(construct2, inequality)
 {
     {
         val v = 0;
@@ -211,7 +212,7 @@ TEST(construct2, simple_val)
     
 }
 
-TEST(construct2, simple_val3)
+TEST(construct2, inequality2)
 {
     {
         val v = false;
@@ -312,6 +313,48 @@ TEST(construct3, simple_val2)
         EXPECT_STRNE("strr", v); 
         
 
+        
+    }
+    
+}
+
+
+TEST(construct4, limits)
+{
+    {
+        val v = std::numeric_limits<int>::max();
+
+        
+
+        EXPECT_EQ(v, std::numeric_limits<int>::max());
+        EXPECT_EQ(std::numeric_limits<int>::max(), v); 
+        
+    }
+    {
+        val v = std::numeric_limits<int>::min();
+
+        
+
+        EXPECT_EQ(v, std::numeric_limits<int>::min());
+        EXPECT_EQ(std::numeric_limits<int>::min(), v); 
+        
+    }
+    {
+        val v = std::numeric_limits<double>::max();
+
+        
+
+        EXPECT_EQ(v, std::numeric_limits<double>::max());
+        EXPECT_EQ(std::numeric_limits<double>::max(), v); 
+        
+    }
+    {
+        val v = std::numeric_limits<double>::min();
+
+        
+
+        EXPECT_EQ(v, std::numeric_limits<double>::min());
+        EXPECT_EQ(std::numeric_limits<double>::min(), v); 
         
     }
     

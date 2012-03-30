@@ -1,7 +1,7 @@
 jsxx
 ====
 
-JSON library for C++, the C++11 way (well, kinda)
+C++ headers-only JSON library, the C++11 way (well, kinda)
 
 ``` c++
 val json =

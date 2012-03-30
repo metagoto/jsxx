@@ -11,6 +11,9 @@ namespace jsxx
     namespace detail
     {
 
+        template<typename>
+        struct iter;
+
 
         template<typename T>
         struct iter_impl_base
@@ -129,8 +132,8 @@ namespace jsxx
                     ? static_cast<erase_type*>(new iter_impl<T,typename c_qual<object>::type>(v.o_, end))
                     : static_cast<erase_type*>(new iter_impl<T,typename c_qual<array>::type>(v.a_, end)))
             {
-                if (v.type() != val_type::object || v.type() != val_type::array)
-                    throw std::invalid_argument("not an object nor an array");
+//                if (v.type() != val_type::object || v.type() != val_type::array)
+//                    throw std::invalid_argument("not an object nor an array");
             }
 
 
