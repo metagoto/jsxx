@@ -42,7 +42,7 @@ demo/demo.out: demo/demo.cpp
 	$(CC) $(LDFLAGSX) $(CFLAGSX) -o $@ $<
 
 clean:
-	rm -f test/*.o $(PROGS)
+	rm -f test/*.o $(PROGS) demo/*.out
 
 .PHONY: clean test example
 
