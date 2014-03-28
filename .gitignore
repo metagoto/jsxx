@@ -1,6 +1,15 @@
 build.sh
 jsxx.*
+repojsxx.*
 *.out
 *.o
 callgrind.out.*
 __pycache__
+build
+test/data
+test/jsoncpp
+test/dropbox-json11
+test/perf-*
+perf.sh
+notes.txt
+
