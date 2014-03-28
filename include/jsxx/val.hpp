@@ -60,7 +60,6 @@ namespace jsxx
     static int key_string(It beg, It end, T& result) {
       return decode_string(beg, end, result);
     }
-
   };
 
 }
