@@ -468,28 +468,29 @@ lest::test const specs[] =
 
     a["1"] = true;
     EXPECT(is_boolean(a["1"]));
-    //EXPECT(a["1"] == true);
+    EXPECT(a["1"]);
 
     a["1"] = false;
     EXPECT(is_boolean(a["1"]));
-    //EXPECT(a["1"] == false);
+    EXPECT(a["1"] == false);
+    EXPECT(!a["1"]);
 
     a["1"] = 3.14;
     EXPECT(is_real(a["1"]));
-    //EXPECT(a["1"] == 3.14);
+    EXPECT(a["1"] == 3.14);
 
     a["1"] = nullptr;
     EXPECT(is_null(a["1"]));
-    //EXPECT(a["1"] == nullptr);
-    //EXPECT(a["1"] == nullptr);
-    //EXPECT(nullptr == a["1"]);
+    EXPECT(a["1"] == nullptr);
+    EXPECT(a["1"] == nullptr);
+    EXPECT(nullptr == a["1"]);
 
     a["2"] = empty::object;
     EXPECT(is_object(a["2"]));
 
     a["2"]["21"] = true;
     EXPECT(is_boolean(a["2"]["21"]));
-    //EXPECT(a["2"]["21"] == true);
+    EXPECT(a["2"]["21"] == true);
 
     a["2"]["22"] = {nullptr, true, 1, "hello", empty::object};
     EXPECT(is_array(a["2"]["22"]));
@@ -497,7 +498,7 @@ lest::test const specs[] =
 
     a["2"]["22"][4]["k"] = 3.14;
     EXPECT(is_real(a["2"]["22"][4]["k"]));
-    //EXPECT(a["2"]["22"][4]["k"] == 3.14);
+    EXPECT(a["2"]["22"][4]["k"] == 3.14);
 
   }},
 
@@ -581,7 +582,6 @@ lest::test const specs[] =
       f = v;
       EXPECT(f == 1.0f);
     }
-
     {
       val u = 0.0;
       val v = 1.0;
@@ -606,7 +606,6 @@ lest::test const specs[] =
       f = v;
       EXPECT(f == 1.0f);
     }
-
     {
       val u = false;
       val v = true;
@@ -631,7 +630,6 @@ lest::test const specs[] =
       f = v;
       EXPECT(f == 1.0f);
     }
-
     {
       val v = {1};
       bool b = v;
@@ -669,7 +667,6 @@ lest::test const specs[] =
       o = get<val::object>(v);
       EXPECT(o.size() == 1);
     }
-
     {
       val v = "hello";
       [](char const* s){ EXPECT(std::string("hello") == s); }(v);
@@ -678,6 +675,40 @@ lest::test const specs[] =
       EXPECT_THROWS(([](char const* s){ EXPECT(std::string("hello") == s); }(v), true));
 
     }
+  }},
+
+  {"in del", [] {
+
+     val a = {1,"2",3};
+     EXPECT(in(a, 0ul));
+     EXPECT(in(a, 1));
+     EXPECT(in(a, 2));
+     EXPECT(!in(a, 3));
+     EXPECT_THROWS((in(a, "1"), true));
+
+     val o = {"1"_k = 1, "2"_k = 2 };
+     EXPECT(in(o, "1"));
+     EXPECT(in(o, std::string("2")));
+     EXPECT(!in(o, "3"));
+     EXPECT_THROWS((in(o, 2), true));
+
+     EXPECT(in(o, a[1]));
+     EXPECT(in(a, o["2"]));
+     EXPECT_THROWS((in(o, a[0]), true));
+     EXPECT_THROWS((in(o, val{3.14}), true));
+
+     EXPECT(del(a, 0ul));
+     EXPECT(a[0] == "2");
+     EXPECT(!del(a, 2));
+
+
+     EXPECT(del(o, "1"));
+     EXPECT(!in(o, "1"));
+     EXPECT(!del(o, "1"));
+     EXPECT(del(o, std::string("2")));
+     EXPECT(!in(o, "2"));
+     EXPECT(!del(o, "2"));
+
   }},
 
   {"reader", [] {

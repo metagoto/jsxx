@@ -371,7 +371,119 @@ namespace jsxx
   }
 
 
+  namespace internal {
+
+    struct container_tag {};
+
+    template<typename T>
+    struct access<T, container_tag>
+    {
+      static bool in(T const& v, std::size_t index) {
+        ensure(v, value::array);
+        return index < v.a_.size();
+      }
+
+      static bool in(T const& v, typename T::char_t const* key) {
+        return find(v, key) != v.o_.end();
+      }
+
+      static bool del(T& v, std::size_t index) {
+        ensure(v, value::array);
+        if (index < v.a_.size()) {
+          v.a_.erase(std::begin(v.a_)+index);
+          return true;
+        }
+        return false;
+      }
+
+      static bool del(T& v, typename T::char_t const* key) {
+        auto it = find(v, key);
+        if (it != v.o_.end()) {
+          v.o_.erase(it);
+          return true;
+        }
+        return false;
+      }
+
+      template<typename U>
+      static auto find(U&& v, typename T::char_t const* key) -> decltype(v.o_.end()) {
+        ensure(v, value::object);
+        return std::find_if(v.o_.begin(), v.o_.end(), [&key](typename T::pair const& p){
+          return p.first == key;
+        });
+      }
+    };
+  }
+
+
+  // object
+  template<typename T>
+  inline bool in(basic_val<T> const& v, typename basic_val<T>::char_t const* key) {
+    return internal::access<basic_val<T>, internal::container_tag>::in(v, key);
+  }
+
+  template<typename T>
+  inline bool in(basic_val<T> const& v, typename basic_val<T>::string const& key) {
+    return in(v, key.c_str());
+  }
+
+  // array
+  template<typename T>
+  inline bool in(basic_val<T> const& v, std::size_t index) {
+    return internal::access<basic_val<T>, internal::container_tag>::in(v, index);
+  }
+
+  // array or object
+  template<typename T>
+  inline bool in(basic_val<T> const& v, basic_val<T> const& key_or_index) {
+    internal::ensure_any(v, value::object, value::array);
+    if (is_object(v)) {
+      if (is_string(key_or_index))
+        return in(v, get<typename basic_val<T>::string>(key_or_index).c_str());
+      throw type_error("key is not convertible to a string");
+    }
+    // else: array
+    if (is_integer(key_or_index))
+      return in(v, get<typename basic_val<T>::integer>(key_or_index));
+    throw type_error("index is not convertible to an integer");
+  }
+
+
+  // delete key from object
+  template<typename T>
+  inline bool del(basic_val<T>& v, typename basic_val<T>::char_t const* key) {
+    return internal::access<basic_val<T>, internal::container_tag>::del(v, key);
+  }
+
+  template<typename T>
+  inline bool del(basic_val<T>& v, typename basic_val<T>::string const& key) {
+    return del(v, key.c_str());
+  }
+
+  // delete index from array
+  template<typename T>
+  inline bool del(basic_val<T>& v, std::size_t index) {
+    return internal::access<basic_val<T>, internal::container_tag>::del(v, index);
+  }
+
+  // array or object
+  template<typename T>
+  inline bool del(basic_val<T>& v, basic_val<T> const& key_or_index) {
+    internal::ensure_any(v, value::object, value::array);
+    if (is_object(v)) {
+      if (is_string(key_or_index))
+        return del(v, get<typename basic_val<T>::string>(key_or_index).c_str());
+      throw type_error("key is not convertible to a string");
+    }
+    // else: array
+    if (is_integer(key_or_index))
+      return del(v, get<typename basic_val<T>::integer>(key_or_index));
+    throw type_error("index is not convertible to an integer");
+  }
+
+
 }
+
 
 
 
@@ -413,132 +525,5 @@ namespace jsxx
 //        return nullptr;
 //      }
 //    };
-
-
-//    struct tag_container {};
-
-//    template<typename T>
-//    struct access<T, tag_container>
-//    {
-//      static bool has(T const& v, std::size_t index)
-//      {
-//        ensure(v, value::array);
-//        return index < v.a_.size();
-//      }
-
-//      static bool has(T const& v, typename T::char_t const* key)
-//      {
-//        return find(v, key) != v.o_.end();
-//      }
-
-//      static bool del(T& v, std::size_t index)
-//      {
-//        ensure(v, value::array);
-//        if (index < v.a_.size()) {
-//          v.a_.erase(std::begin(v.a_)+index);
-//          return true;
-//        }
-//        return false;
-//      }
-
-//      static bool del(T& v, typename T::char_t const* key)
-//      {
-//        auto it = find(v, key);
-//        if (it != v.o_.end()) {
-//          v.o_.erase(it);
-//          return true;
-//        }
-//        return false;
-//      }
-
-//      // helpers
-//      template<typename U>
-//      static auto find(U&& v, typename T::char_t const* key)
-//          -> decltype(v.o_.end())
-//      {
-//        ensure(v, value::object);
-//        return std::find_if(v.o_.begin(), v.o_.end()
-//                           ,[&key](typename T::pair const& p){
-//          return p.first == key;
-//        });
-//      }
-//    };
-
-//  } // internal
-
-
-//  // object
-//  template<typename T>
-//  inline bool has(basic_val<T> const& v, typename basic_val<T>::char_t const* key)
-//  {
-//    return internal::access<basic_val<T>, internal::tag_container>::has(v, key);
 //  }
-
-//  template<typename T>
-//  inline bool has(basic_val<T> const& v, typename basic_val<T>::string const& key)
-//  {
-//    return has(v, key.c_str());
-//  }
-
-//  // array
-//  template<typename T>
-//  inline bool has(basic_val<T> const& v, std::size_t index)
-//  {
-//    return internal::access<basic_val<T>, internal::tag_container>::has(v, index);
-//  }
-
-//  // array or object
-//  template<typename T>
-//  inline bool has(basic_val<T> const& v, basic_val<T> const& key_or_index)
-//  {
-//    internal::ensure_any(v, value::object, value::array);
-//    if (is_object(v)) {
-//      if (is_string(key_or_index))
-//        return has(v, get<typename basic_val<T>::string>(key_or_index).c_str());
-//      throw std::invalid_argument("key is not convertible to a string");
-//    }
-//    // else: array
-//    if (is_integer(key_or_index))
-//      return has(v, get<typename basic_val<T>::integer>(key_or_index));
-//    throw std::invalid_argument("index is not convertible to an integer");
-//  }
-
-
-//  // delete key from object
-//  template<typename T>
-//  inline bool del(basic_val<T>& v, typename basic_val<T>::char_t const* key)
-//  {
-//    return internal::access<basic_val<T>, internal::tag_container>::del(v, key);
-//  }
-
-//  template<typename T>
-//  inline bool del(basic_val<T>& v, typename basic_val<T>::string const& key)
-//  {
-//    return del(v, key.c_str());
-//  }
-
-//  // delete index from array
-//  template<typename T>
-//  inline bool del(basic_val<T>& v, std::size_t index)
-//  {
-//    return internal::access<basic_val<T>, internal::tag_container>::del(v, index);
-//  }
-
-//  // array or object
-//  template<typename T>
-//  inline bool del(basic_val<T>& v, basic_val<T> const& key_or_index)
-//  {
-//    internal::ensure_any(v, value::object, value::array);
-//    if (is_object(v)) {
-//      if (is_string(key_or_index))
-//        return del(v, get<typename basic_val<T>::string>(key_or_index).c_str());
-//      throw std::invalid_argument("key is not convertible to a string");
-//    }
-//    // else: array
-//    if (is_integer(key_or_index))
-//      return del(v, get<typename basic_val<T>::integer>(key_or_index));
-//    throw std::invalid_argument("index is not convertible to an integer");
-//  }
-
-
 //} // ns
