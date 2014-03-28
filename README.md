@@ -27,11 +27,47 @@ Usage
 
 The library is header only. No need to build anything. Make your compiler aware of the jsxx include path (`-I/path/to/jsxx/include`) and enable the C++11 support with `-std=c++11` for clang or gcc.
 
+Quick example:
+
+``` c++
+#include <iostream>
+#include <jsxx/val.hpp>
+#include <jsxx/reader.hpp>
+#include <jsxx/writer.hpp>
+
+using namespace jsxx;
+
+int main() {
+
+  // [true, false, null]
+  val arr = { true, false, nullptr };
+
+  // { "hello": "world" }
+  val obj = { "hello"_k = "world" };
+
+  // add a new entry
+  obj["arr"] = arr;
+
+  // textual json
+  std::string json = R"(
+    { "hello": "world", "arr": [true, false, null] }
+  )";
+
+  // read it into a val
+  auto obj2 = read<val>(json);
+
+  // this should be true
+  if (obj == obj2) {
+    std::cout << obj << std::endl;
+  }
+}
+```
+
 
 Test
 ----
 
-Building tests requires CMAKE. Proceed as follow:
+Building tests requires CMAKE. From the directory where `CMakeLists.txt` resides, proceed as follow:
 
 ```
 mkdir build
@@ -78,23 +114,23 @@ struct decode_handler<val>
   static int integer(It beg, It end, T& result) {
     return string_to_integer(beg, end, result);
   }
-
   template<typename It, typename T>
   static int real(It beg, It end, T& result) {
     return string_to_real(beg, end, result);
   }
-
   template<typename It, typename T>
   static int string(It beg, It end, T& result) {
     return decode_string(beg, end, result);
   }
-
   template<typename It, typename T>
   static int key_string(It beg, It end, T& result) {
     return decode_string(beg, end, result);
   }
 };
 ```
+
+The default provided decode routines (`string_to_integer` etc) are quite efficient and able to work with the most common C++ types without change.
+
 
 WIP.................
 
