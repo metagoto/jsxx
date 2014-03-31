@@ -12,19 +12,19 @@ namespace jsxx
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val()
-    : type_{value::null}
+    : type_(value::null)
   {}
 
   template<typename T>
   inline basic_val<T>::basic_val(self_t const& v)
-    : type_{value::null}
+    : type_(value::null)
   {
     copy(v);
   }
 
   template<typename T>
   inline basic_val<T>::basic_val(self_t&& v)
-    : type_{value::null}
+    : type_(value::null)
   {
     move(std::move(v));
   }
@@ -32,89 +32,100 @@ namespace jsxx
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(std::nullptr_t)
-    : type_{value::null}
+    : type_(value::null)
   {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(boolean v)
-    : type_{value::boolean}, b_{v}
+    : type_(value::boolean), b_(v)
   {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(integer v)
-    : type_{value::integer}, i_{v}
+    : type_(value::integer), i_(v)
   {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(real v)
-    : type_{value::real}, r_{v}
+    : type_(value::real), r_(v)
   {}
 
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(string const& v)
-    : type_{value::string}, s_{v}
+    : type_(value::string), s_(v)
   {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(char_t const* v)
-    : type_{value::string}, s_{v}
+    : type_(value::string), s_(v)
   {}
 
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(array const& v)
-    : type_(value::array), a_{v}
+    : type_(value::array), a_(v)
   {}
 
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(object const& v)
-    : type_(value::object), o_{v}
+    : type_(value::object), o_(v)
   {}
 
 
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(empty::array_t)
-    : type_(value::array), a_{}
+    : type_(value::array), a_()
   {}
 
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(empty::object_t)
-    : type_(value::object), o_{}
+    : type_(value::object), o_()
   {}
 
+
+  template<typename T>
+  constexpr inline basic_val<T>::basic_val(empty::array_t, std::size_t const& v)
+    : type_(value::array), a_(v)
+  {}
+
+
+  template<typename T>
+  constexpr inline basic_val<T>::basic_val(empty::object_t, std::size_t const& v)
+    : type_(value::object), o_(v)
+  {}
 
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(string&& v)
-    : type_{value::string}, s_{std::move(v)}
+    : type_(value::string), s_(std::move(v))
   {}
 
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(array&& v)
-    : type_{value::array}, a_{std::move(v)}
+    : type_(value::array), a_(std::move(v))
   {}
 
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(object&& v)
-    : type_{value::object}, o_{std::move(v)}
+    : type_(value::object), o_(std::move(v))
   {}
 
 
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(std::initializer_list<pair> l)
-    : type_{value::object}, o_(std::begin(l), std::end(l))
+    : type_(value::object), o_(std::begin(l), std::end(l))
   {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(std::initializer_list<self_t> l)
-    : type_{value::array}, a_(std::begin(l), std::end(l))
+    : type_(value::array), a_(std::begin(l), std::end(l))
   {}
 
 
@@ -122,15 +133,14 @@ namespace jsxx
   template<typename T>
   template<typename U, typename>
   constexpr inline basic_val<T>::basic_val(U v)
-    ///: basic_val(static_cast<int_type>(t)) // OK?
-    : type_{value::integer}, i_{v}
+    : type_(value::integer), i_(v)
   {}
 
 
   template<typename T>
   template<typename U, typename, typename>
   constexpr inline basic_val<T>::basic_val(U v)
-    : type_{value::real}, r_{v}
+    : type_(value::real), r_(v)
   {}
 
 
@@ -353,7 +363,7 @@ namespace jsxx
   template<typename T>
   constexpr inline basic_val<T>::k::k(char_t const* s)
     : key(s)
-  { }
+  {}
 
 
   template<typename T>

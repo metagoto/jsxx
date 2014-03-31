@@ -25,7 +25,7 @@ This is what jsxx does. It relies on a bunch of C++11 features, hence a recent C
 Usage
 -----
 
-The library is header only. No need to build anything. Make your compiler aware of the jsxx include path (`-I/path/to/jsxx/include`) and enable the C++11 support with `-std=c++11` for clang or gcc.
+The library is header only. No need to build anything. To use it in you project, make your compiler aware of the jsxx include path (`-I/path/to/jsxx/include`) and enable the C++11 support with `-std=c++11` for clang or gcc.
 
 Quick example:
 

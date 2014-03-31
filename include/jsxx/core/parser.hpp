@@ -35,16 +35,11 @@ namespace jsxx
           , begin_(s)
           , end_(s)
           , parent_(parent)
-          , delta_(0)
         { }
 
         token(int type, iterator_t s, iterator_t e, std::size_t parent)
-          : type_(type)
-          , begin_(s)
-          , end_(e)
-          , parent_(parent)
-          , delta_(0)
-        { }
+          : token(type, s, parent)
+        { end_ = e; }
 
         token() = delete;
         token(token const&) = default;
@@ -55,14 +50,14 @@ namespace jsxx
         int type() const { return type_; }
         iterator_t begin() const { return begin_; }
         iterator_t end() const { return end_; }
-        std::size_t delta() const { return delta_; }
+        std::size_t count() const { return count_; }
 
       private:
         int type_;
         iterator_t begin_;
         iterator_t end_;
         std::size_t parent_;
-        std::size_t delta_;
+        int count_ = 0;
         template<typename> friend struct context;
       };
 
@@ -70,37 +65,43 @@ namespace jsxx
       template<int Type>
       void push(iterator_t s) {
         tokens_.push_back(token(Type, s, cur_));
+        ++tokens_[cur_].count_;
         cur_ = tokens_.size() - 1;
       }
 
       void close(iterator_t e) {
         token& i = tokens_[cur_];
         i.end_ = e;
-        i.delta_ = tokens_.size() - cur_ - 1;
         cur_ = i.parent_;
       }
 
       void pop() {
-        token const& i = tokens_.back();
-        cur_ = i.parent_;
+        cur_ = tokens_.back().parent_;
+        --tokens_[cur_].count_;
         tokens_.pop_back();
       }
 
       template<int Type>
       void push_close(iterator_t s) {
         tokens_.push_back(token(Type, s, cur_));
+        ++tokens_[cur_].count_;
       }
 
       template<int Type>
       void push_close(iterator_t s, iterator_t e) {
         tokens_.push_back(token(Type, s, e, cur_));
+        ++tokens_[cur_].count_;
       }
 
       void reset(iterator_t ibeg, iterator_t iend) {
         beg = it = ibeg;
         end = iend;
         tokens_.clear();
-        tokens_.reserve(std::distance(ibeg, iend)/8); /// TMP
+      }
+
+      void finalize() {
+        if (!tokens_.empty())
+          --tokens_[0].count_;
       }
 
       container_t& tokens() { return tokens_; }
@@ -110,9 +111,8 @@ namespace jsxx
       iterator_t end;
       iterator_t it;
       container_t tokens_;
-      std::size_t cur_;
+      std::size_t cur_ = 0;
     };
-
   }
 
 
@@ -127,6 +127,7 @@ namespace jsxx
     val_t parse(it_t beg, it_t end) {
       ctx_.reset(beg, end);
       if (grammar_t::start::match(ctx_) && !ctx_.tokens().empty()) {
+        ctx_.finalize();
         std::size_t start = 0;
         return build(start);
       }
@@ -140,11 +141,12 @@ namespace jsxx
       using namespace jsxx::grammar;
 
       int error = 0;
-      auto& tokens = ctx_.tokens();
+      auto const& tokens = ctx_.tokens();
       auto const& tok = tokens[start++];
 
       switch (tok.type())
       {
+        default: break;
         case token::string: {
           typename val_t::string str;
           if (decode_handler<val_t>::string(tok.begin(), tok.end(), str) == 0)
@@ -165,20 +167,15 @@ namespace jsxx
           error = -1;
           break;
         }
-        case token::true_:
-          return true;
-        case token::false_:
-          return false;
         case token::object: {
-          val_t o = empty::object;
+          std::size_t const num = tok.count()/2;
+          auto o = val_t(empty::object, num);
           auto& ro = get<typename val_t::object>(o);
-          ro.reserve(tok.delta()/2);
-          std::size_t const e = start+tok.delta();
-          for ( ; start != e;) {
+          for (std::size_t i = 0; i < num; ++i) {
             auto const& t = tokens[start++];
             typename val_t::string str;
             if (decode_handler<val_t>::key_string(t.begin(), t.end(), str) == 0)
-              ro.emplace_back(std::move(str), build(start));
+              ro[i] = std::move(typename val_t::pair(std::move(str), build(start))); // TODO: swap
             else {
               error = -1;
               break;
@@ -189,16 +186,17 @@ namespace jsxx
           return o;
         }
         case token::array: {
-          val_t a = empty::array;
+          std::size_t const num = tok.count();
+          auto a = val_t(empty::array, num);
           auto& ra = get<typename val_t::array>(a);
-          ra.reserve(tok.delta());
-          std::size_t const e = start+tok.delta();
-          for ( ; start != e;)
-            ra.push_back(build(start));
+          for (std::size_t i = 0; i < num;++i)
+            ra[i] = build(start);
           return a;
         }
-        default:
-          break;
+        case token::true_:
+          return true;
+        case token::false_:
+          return false;
       }
       if (error)
         throw parse_error("could not convert to native type"); // TODO: explicit
@@ -208,27 +206,4 @@ namespace jsxx
     context_t ctx_;
   };
 
-
-//  template<typename Val, typename Str>
-//  Val parse(Str const& s)
-//  {
-//    typedef typename Str::const_iterator it_t;
-//    parser<Val, it_t, grammar::json_strict> p;
-//    return p.parse(s.cbegin(), s.cend());
-//  }
-
-//  template<typename Val, typename Char, std::size_t N>
-//  Val parse(Char const (&s)[N])
-//  {
-//    parser<Val, Char const*, grammar::json_strict> p;
-//    return p.parse(s, s+N-1);
-//  }
-
-//  template<typename Val, typename It>
-//  Val parse(It beg, It end)
-//  {
-//    parser<Val, It, grammar::json_strict> p;
-//    return p.parse(beg, end);
-//  }
-
-} // ns
+}

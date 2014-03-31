@@ -41,6 +41,8 @@ namespace jsxx
 
     constexpr basic_val(empty::array_t);
     constexpr basic_val(empty::object_t);
+    constexpr basic_val(empty::array_t, std::size_t const&);
+    constexpr basic_val(empty::object_t, std::size_t const&);
 
     constexpr basic_val(string&&);
     constexpr basic_val(array&&);

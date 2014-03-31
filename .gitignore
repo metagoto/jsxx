@@ -9,6 +9,7 @@ build
 test/data
 test/jsoncpp
 test/dropbox-json11
+test/hjiang-jsonxx
 test/perf-*
 perf.sh
 notes.txt

@@ -1,4 +1,5 @@
 
+#include <iostream>
 #include <jsxx/val.hpp>
 #include <jsxx/reader.hpp>
 #include <jsxx/writer.hpp>
@@ -701,7 +702,6 @@ lest::test const specs[] =
      EXPECT(a[0] == "2");
      EXPECT(!del(a, 2));
 
-
      EXPECT(del(o, "1"));
      EXPECT(!in(o, "1"));
      EXPECT(!del(o, "1"));
@@ -728,6 +728,10 @@ lest::test const specs[] =
 
        s = R"("\")";
        EXPECT_THROWS((read<val>(s), true));
+
+       s = R"("ok")";
+       v = read<val>(s);
+       EXPECT(is_string(v));
      }
      {
        char const* s = "[1,2,3]";
