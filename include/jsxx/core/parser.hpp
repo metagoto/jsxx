@@ -99,9 +99,12 @@ namespace jsxx
         tokens_.clear();
       }
 
-      void finalize() {
-        if (!tokens_.empty())
+      bool finalize() {
+        if (!tokens_.empty()) {
           --tokens_[0].count_;
+          return true;
+        }
+        return false;
       }
 
       container_t& tokens() { return tokens_; }
@@ -126,8 +129,7 @@ namespace jsxx
 
     val_t parse(it_t beg, it_t end) {
       ctx_.reset(beg, end);
-      if (grammar_t::start::match(ctx_) && !ctx_.tokens().empty()) {
-        ctx_.finalize();
+      if (grammar_t::start::match(ctx_) && ctx_.finalize()) {
         std::size_t start = 0;
         return build(start);
       }
