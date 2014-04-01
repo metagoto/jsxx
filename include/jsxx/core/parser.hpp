@@ -148,7 +148,6 @@ namespace jsxx
 
       switch (tok.type())
       {
-        default: break;
         case token::string: {
           typename val_t::string str;
           if (decode_handler<val_t>::string(tok.begin(), tok.end(), str) == 0)
@@ -199,6 +198,8 @@ namespace jsxx
           return true;
         case token::false_:
           return false;
+        default:
+          return nullptr;
       }
       if (error)
         throw parse_error("could not convert to native type"); // TODO: explicit
