@@ -15,12 +15,24 @@ namespace jsxx
   { return v.type() == value::boolean; }
 
   template<typename T>
+  inline bool is_bool(basic_val<T> const& v)
+  { return is_boolean(v); }
+
+  template<typename T>
   inline bool is_integer(basic_val<T> const& v)
   { return v.type() == value::integer; }
 
   template<typename T>
+  inline bool is_int(basic_val<T> const& v)
+  { return is_integer(v); }
+
+  template<typename T>
   inline bool is_real(basic_val<T> const& v)
   { return v.type() == value::real; }
+
+  template<typename T>
+  inline bool is_double(basic_val<T> const& v)
+  { return is_real(v); }
 
   template<typename T>
   inline bool is_string(basic_val<T> const& v)

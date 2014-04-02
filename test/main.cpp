@@ -15,8 +15,11 @@ lest::test const specs[] =
     val a;
     EXPECT(is_null(a));
     EXPECT(!is_boolean(a));
+    EXPECT(!is_bool(a));
     EXPECT(!is_integer(a));
+    EXPECT(!is_int(a));
     EXPECT(!is_real(a));
+    EXPECT(!is_double(a));
     EXPECT(!is_string(a));
     EXPECT(!is_array(a));
     EXPECT(!is_object(a));
@@ -30,13 +33,16 @@ lest::test const specs[] =
 
     val c = true;
     EXPECT(is_boolean(c));
+    EXPECT(is_bool(c));
 
     val d = 1;
     EXPECT(is_integer(d));
+    EXPECT(is_int(d));
     EXPECT(is_number(d));
 
     val e = 1.0;
     EXPECT(is_real(e));
+    EXPECT(is_double(e));
     EXPECT(is_number(e));
 
     val f = "hello";
