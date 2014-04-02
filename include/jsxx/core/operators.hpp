@@ -53,7 +53,7 @@ namespace jsxx
   // overload for char_t const*
   template<typename T>
   inline bool operator==(basic_val<T> const& v, typename basic_val<T>::char_t const* a) {
-    if (auto p = get<typename basic_val<T>::string>(&v))
+    if (auto p = get<typename basic_val<T>::string_t>(&v))
       return p->compare(a) == 0;
     return false;
   }
@@ -64,7 +64,7 @@ namespace jsxx
 
   template<typename T>
   inline bool operator!=(basic_val<T> const& v, typename basic_val<T>::char_t const* a) {
-    if (auto p = get<typename basic_val<T>::string>(&v))
+    if (auto p = get<typename basic_val<T>::string_t>(&v))
       return p->compare(a) != 0;
     return true;
   }

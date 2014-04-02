@@ -12,18 +12,18 @@ namespace jsxx
     using tag_t = Tag;
     using self_t = basic_val<Tag>;
 
-    using integer = typename trait<self_t, Tag>::int_t;
-    using real = typename trait<self_t, Tag>::real_t;
-    using boolean = typename trait<self_t, Tag>::bool_t;
-    using string = typename trait<self_t, Tag>::string_t;
-    using array = typename trait<self_t, Tag>::array_t;
-    using object = typename trait<self_t, Tag>::object_t;
-    using pair = typename trait<self_t, Tag>::pair_t;
-    using char_t = typename string::value_type;
+    using int_t = typename trait<self_t, Tag>::int_t;
+    using real_t = typename trait<self_t, Tag>::real_t;
+    using bool_t = typename trait<self_t, Tag>::bool_t;
+    using string_t = typename trait<self_t, Tag>::string_t;
+    using array_t = typename trait<self_t, Tag>::array_t;
+    using object_t = typename trait<self_t, Tag>::object_t;
+    using pair_t = typename trait<self_t, Tag>::pair_t;
+    using char_t = typename string_t::value_type;
     using null_t = std::nullptr_t;
 
-    using iterator = typename array::iterator;
-    using const_iterator = typename array::const_iterator;
+    using iterator = typename array_t::iterator;
+    using const_iterator = typename array_t::const_iterator;
 
     constexpr basic_val();
 
@@ -31,24 +31,24 @@ namespace jsxx
     basic_val(self_t&&);
 
     constexpr basic_val(std::nullptr_t);
-    constexpr basic_val(boolean);
-    constexpr basic_val(integer);
-    constexpr basic_val(real);
-    constexpr basic_val(string const&);
+    constexpr basic_val(bool_t);
+    constexpr basic_val(int_t);
+    constexpr basic_val(real_t);
+    constexpr basic_val(string_t const&);
     constexpr basic_val(char_t const*);
-    constexpr basic_val(array const&);
-    constexpr basic_val(object const&);
+    constexpr basic_val(array_t const&);
+    constexpr basic_val(object_t const&);
 
     constexpr basic_val(empty::array_t);
     constexpr basic_val(empty::object_t);
     constexpr basic_val(empty::array_t, std::size_t const&);
     constexpr basic_val(empty::object_t, std::size_t const&);
 
-    constexpr basic_val(string&&);
-    constexpr basic_val(array&&);
-    constexpr basic_val(object&&);
+    constexpr basic_val(string_t&&);
+    constexpr basic_val(array_t&&);
+    constexpr basic_val(object_t&&);
 
-    constexpr basic_val(std::initializer_list<pair>);
+    constexpr basic_val(std::initializer_list<pair_t>);
     constexpr basic_val(std::initializer_list<self_t>);
 
     template<typename T>
@@ -69,8 +69,8 @@ namespace jsxx
     self_t& operator[](std::size_t);
     self_t const& operator[](std::size_t) const;
 
-    self_t& operator[](string const&);
-    self_t const& operator[](string const&) const;
+    self_t& operator[](string_t const&);
+    self_t const& operator[](string_t const&) const;
 
     template<std::size_t N>
     self_t& operator[](char_t const(&)[N]);
@@ -96,14 +96,14 @@ namespace jsxx
     {
       constexpr explicit k(char_t const*);
 
-      constexpr pair operator=(std::initializer_list<self_t>) const;
+      constexpr pair_t operator=(std::initializer_list<self_t>) const;
 
       template<typename T>
       constexpr typename std::enable_if<
-        !std::is_same<T,std::initializer_list<pair>>::value, pair
-      >::type operator=(T&&) const;
+        !std::is_same<T,std::initializer_list<pair_t>>::value, pair_t>::type
+      operator=(T&&) const;
 
-      constexpr pair operator=(std::initializer_list<pair>) const;
+      constexpr pair_t operator=(std::initializer_list<pair_t>) const;
 
       char_t const* const key;
     };
@@ -112,12 +112,12 @@ namespace jsxx
     value type_;
 
     union {
-      boolean b_;
-      integer i_;
-      real r_;
-      string s_;
-      array a_;
-      object o_;
+      bool_t b_;
+      int_t i_;
+      real_t r_;
+      string_t s_;
+      array_t a_;
+      object_t o_;
     };
 
     void free();

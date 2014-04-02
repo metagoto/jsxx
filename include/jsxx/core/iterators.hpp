@@ -18,7 +18,7 @@ namespace jsxx
     template<typename T>
     struct iterator_proxy<T, const_items>
     {
-      using object = typename T::object;
+      using object = typename T::object_t;
       using const_iterator = typename object::const_iterator;
 
       iterator_proxy(object const& o) : o_(o) {}
@@ -36,7 +36,7 @@ namespace jsxx
     template<typename T>
     struct const_values_iterator : std::iterator<std::forward_iterator_tag, T>
     {
-      using const_iterator = typename T::object::const_iterator;
+      using const_iterator = typename T::object_t::const_iterator;
       using value_type = typename std::iterator<std::forward_iterator_tag, T>::value_type;
       using self_type = const_values_iterator<T>;
 
@@ -58,7 +58,7 @@ namespace jsxx
     template<typename T>
     struct iterator_proxy<T, const_values>
     {
-      using object = typename T::object;
+      using object = typename T::object_t;
 
       iterator_proxy(object const& o) : o_(o) {}
 
@@ -77,7 +77,7 @@ namespace jsxx
       : std::iterator<std::forward_iterator_tag, typename T::string>
     {
 
-      using const_iterator = typename T::object::const_iterator;
+      using const_iterator = typename T::object_t::const_iterator;
       using value_type = typename std::iterator<std::forward_iterator_tag, T>::value_type;
       using self_type = const_keys_iterator<T>;
 
@@ -99,7 +99,7 @@ namespace jsxx
     template<typename T>
     struct iterator_proxy<T, const_keys>
     {
-      using object = typename T::object;
+      using object = typename T::object_t;
 
       iterator_proxy(object const& o) : o_(o) {}
 

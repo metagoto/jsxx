@@ -61,48 +61,48 @@ namespace jsxx
     struct get_tag {};
 
     template<typename T>
-    struct access<T, get_tag, typename T::boolean> {
-      static cqual<T, typename T::boolean>* get(T& v) {
+    struct access<T, get_tag, typename T::bool_t> {
+      static cqual<T, typename T::bool_t>* get(T& v) {
         if (v.type() == value::boolean)
           return &v.b_;
         return nullptr;
       }
     };
     template<typename T>
-    struct access<T, get_tag, typename T::integer> {
-      static cqual<T, typename T::integer>* get(T& v) {
+    struct access<T, get_tag, typename T::int_t> {
+      static cqual<T, typename T::int_t>* get(T& v) {
         if (v.type() == value::integer)
           return &v.i_;
         return nullptr;
       }
     };
     template<typename T>
-    struct access<T, get_tag, typename T::real> {
-      static cqual<T, typename T::real>* get(T& v) {
+    struct access<T, get_tag, typename T::real_t> {
+      static cqual<T, typename T::real_t>* get(T& v) {
         if (v.type() == value::real)
           return &v.r_;
         return nullptr;
       }
     };
     template<typename T>
-    struct access<T, get_tag, typename T::string> {
-      static cqual<T, typename T::string>* get(T& v) {
+    struct access<T, get_tag, typename T::string_t> {
+      static cqual<T, typename T::string_t>* get(T& v) {
         if (v.type() == value::string)
           return &v.s_;
         return nullptr;
       }
     };
     template<typename T>
-    struct access<T, get_tag, typename T::array> {
-      static cqual<T, typename T::array>* get(T& v) {
+    struct access<T, get_tag, typename T::array_t> {
+      static cqual<T, typename T::array_t>* get(T& v) {
         if (v.type() == value::array)
           return &v.a_;
         return nullptr;
       }
     };
     template<typename T>
-    struct access<T, get_tag, typename T::object> {
-      static cqual<T, typename T::object>* get(T& v) {
+    struct access<T, get_tag, typename T::object_t> {
+      static cqual<T, typename T::object_t>* get(T& v) {
         if (v.type() == value::object)
           return &v.o_;
         return nullptr;
@@ -140,207 +140,207 @@ namespace jsxx
 
   //
   template<typename T>
-  inline auto get_boolean(basic_val<T> const& v) -> typename basic_val<T>::boolean const& {
-    return get<typename basic_val<T>::boolean>(v);
+  inline auto get_boolean(basic_val<T> const& v) -> typename basic_val<T>::bool_t const& {
+    return get<typename basic_val<T>::bool_t>(v);
   }
   template<typename T>
-  inline auto get_boolean(basic_val<T>& v) -> typename basic_val<T>::boolean& {
-    return get<typename basic_val<T>::boolean>(v);
+  inline auto get_boolean(basic_val<T>& v) -> typename basic_val<T>::bool_t& {
+    return get<typename basic_val<T>::bool_t>(v);
   }
   template<typename T>
-  inline auto get_bool(basic_val<T> const& v) -> typename basic_val<T>::boolean const& {
+  inline auto get_bool(basic_val<T> const& v) -> typename basic_val<T>::bool_t const& {
     return get_boolean(v);
   }
   template<typename T>
-  inline auto get_bool(basic_val<T>& v) -> typename basic_val<T>::boolean& {
+  inline auto get_bool(basic_val<T>& v) -> typename basic_val<T>::bool_t& {
     return get_boolean(v);
   }
 
   template<typename T>
-  inline auto get_boolean(basic_val<T> const* v) -> typename basic_val<T>::boolean const* {
-    return get<typename basic_val<T>::boolean>(v);
+  inline auto get_boolean(basic_val<T> const* v) -> typename basic_val<T>::bool_t const* {
+    return get<typename basic_val<T>::bool_t>(v);
   }
   template<typename T>
-  inline auto get_boolean(basic_val<T>* v) -> typename basic_val<T>::boolean* {
-    return get<typename basic_val<T>::boolean>(v);
+  inline auto get_boolean(basic_val<T>* v) -> typename basic_val<T>::bool_t* {
+    return get<typename basic_val<T>::bool_t>(v);
   }
   template<typename T>
-  inline auto get_bool(basic_val<T> const* v) -> typename basic_val<T>::boolean const* {
+  inline auto get_bool(basic_val<T> const* v) -> typename basic_val<T>::bool_t const* {
     return get_boolean(v);
   }
   template<typename T>
-  inline auto get_bool(basic_val<T>* v) -> typename basic_val<T>::boolean* {
+  inline auto get_bool(basic_val<T>* v) -> typename basic_val<T>::bool_t* {
     return get_boolean(v);
   }
   //
   template<typename T>
-  inline auto get_integer(basic_val<T> const& v) -> typename basic_val<T>::integer const& {
-    return get<typename basic_val<T>::integer>(v);
+  inline auto get_integer(basic_val<T> const& v) -> typename basic_val<T>::int_t const& {
+    return get<typename basic_val<T>::int_t>(v);
   }
   template<typename T>
-  inline auto get_integer(basic_val<T>& v) -> typename basic_val<T>::integer& {
-    return get<typename basic_val<T>::integer>(v);
+  inline auto get_integer(basic_val<T>& v) -> typename basic_val<T>::int_t& {
+    return get<typename basic_val<T>::int_t>(v);
   }
   template<typename T>
-  inline auto get_int(basic_val<T> const& v) -> typename basic_val<T>::integer const& {
+  inline auto get_int(basic_val<T> const& v) -> typename basic_val<T>::int_t const& {
     return get_integer(v);
   }
   template<typename T>
-  inline auto get_int(basic_val<T>& v) -> typename basic_val<T>::integer& {
+  inline auto get_int(basic_val<T>& v) -> typename basic_val<T>::int_t& {
     return get_integer(v);
   }
 
   template<typename T>
-  inline auto get_integer(basic_val<T> const* v) -> typename basic_val<T>::integer const* {
-    return get<typename basic_val<T>::integer>(v);
+  inline auto get_integer(basic_val<T> const* v) -> typename basic_val<T>::int_t const* {
+    return get<typename basic_val<T>::int_t>(v);
   }
   template<typename T>
-  inline auto get_integer(basic_val<T>* v) -> typename basic_val<T>::integer* {
-    return get<typename basic_val<T>::integer>(v);
+  inline auto get_integer(basic_val<T>* v) -> typename basic_val<T>::int_t* {
+    return get<typename basic_val<T>::int_t>(v);
   }
   template<typename T>
-  inline auto get_int(basic_val<T> const* v) -> typename basic_val<T>::integer const* {
+  inline auto get_int(basic_val<T> const* v) -> typename basic_val<T>::int_t const* {
     return get_integer(v);
   }
   template<typename T>
-  inline auto get_int(basic_val<T>* v) -> typename basic_val<T>::integer* {
+  inline auto get_int(basic_val<T>* v) -> typename basic_val<T>::int_t* {
     return get_integer(v);
   }
   //
   template<typename T>
-  inline auto get_real(basic_val<T> const& v) -> typename basic_val<T>::real const& {
-    return get<typename basic_val<T>::real>(v);
+  inline auto get_real(basic_val<T> const& v) -> typename basic_val<T>::real_t const& {
+    return get<typename basic_val<T>::real_t>(v);
   }
   template<typename T>
-  inline auto get_real(basic_val<T>& v) -> typename basic_val<T>::real& {
-    return get<typename basic_val<T>::real>(v);
+  inline auto get_real(basic_val<T>& v) -> typename basic_val<T>::real_t& {
+    return get<typename basic_val<T>::real_t>(v);
   }
   template<typename T>
-  inline auto get_double(basic_val<T> const& v) -> typename basic_val<T>::real const& {
+  inline auto get_double(basic_val<T> const& v) -> typename basic_val<T>::real_t const& {
     return get_real(v);
   }
   template<typename T>
-  inline auto get_double(basic_val<T>& v) -> typename basic_val<T>::real& {
+  inline auto get_double(basic_val<T>& v) -> typename basic_val<T>::real_t& {
     return get_real(v);
   }
 
   template<typename T>
-  inline auto get_real(basic_val<T> const* v) -> typename basic_val<T>::real const* {
-    return get<typename basic_val<T>::real>(v);
+  inline auto get_real(basic_val<T> const* v) -> typename basic_val<T>::real_t const* {
+    return get<typename basic_val<T>::real_t>(v);
   }
   template<typename T>
-  inline auto get_real(basic_val<T>* v) -> typename basic_val<T>::real* {
-    return get<typename basic_val<T>::real>(v);
+  inline auto get_real(basic_val<T>* v) -> typename basic_val<T>::real_t* {
+    return get<typename basic_val<T>::real_t>(v);
   }
   template<typename T>
-  inline auto get_double(basic_val<T> const* v) -> typename basic_val<T>::real const* {
+  inline auto get_double(basic_val<T> const* v) -> typename basic_val<T>::real_t const* {
     return get_real(v);
   }
   template<typename T>
-  inline auto get_double(basic_val<T>* v) -> typename basic_val<T>::real* {
+  inline auto get_double(basic_val<T>* v) -> typename basic_val<T>::real_t* {
     return get_real(v);
   }
   //
   template<typename T>
-  inline auto get_string(basic_val<T> const& v) -> typename basic_val<T>::string const& {
-    return get<typename basic_val<T>::string>(v);
+  inline auto get_string(basic_val<T> const& v) -> typename basic_val<T>::string_t const& {
+    return get<typename basic_val<T>::string_t>(v);
   }
   template<typename T>
-  inline auto get_string(basic_val<T>& v) -> typename basic_val<T>::string& {
-    return get<typename basic_val<T>::string>(v);
+  inline auto get_string(basic_val<T>& v) -> typename basic_val<T>::string_t& {
+    return get<typename basic_val<T>::string_t>(v);
   }
 
   template<typename T>
-  inline auto get_string(basic_val<T> const* v) -> typename basic_val<T>::string const* {
-    return get<typename basic_val<T>::string>(v);
+  inline auto get_string(basic_val<T> const* v) -> typename basic_val<T>::string_t const* {
+    return get<typename basic_val<T>::string_t>(v);
   }
   template<typename T>
-  inline auto get_string(basic_val<T>* v) -> typename basic_val<T>::string* {
-    return get<typename basic_val<T>::string>(v);
+  inline auto get_string(basic_val<T>* v) -> typename basic_val<T>::string_t* {
+    return get<typename basic_val<T>::string_t>(v);
   }
   //
   template<typename T>
-  inline auto get_array(basic_val<T> const& v) -> typename basic_val<T>::array const& {
-    return get<typename basic_val<T>::array>(v);
+  inline auto get_array(basic_val<T> const& v) -> typename basic_val<T>::array_t const& {
+    return get<typename basic_val<T>::array_t>(v);
   }
   template<typename T>
-  inline auto get_array(basic_val<T>& v) -> typename basic_val<T>::array& {
-    return get<typename basic_val<T>::array>(v);
+  inline auto get_array(basic_val<T>& v) -> typename basic_val<T>::array_t& {
+    return get<typename basic_val<T>::array_t>(v);
   }
 
   template<typename T>
-  inline auto get_array(basic_val<T> const* v) -> typename basic_val<T>::array const* {
-    return get<typename basic_val<T>::array>(v);
+  inline auto get_array(basic_val<T> const* v) -> typename basic_val<T>::array_t const* {
+    return get<typename basic_val<T>::array_t>(v);
   }
   template<typename T>
-  inline auto get_array(basic_val<T>* v) -> typename basic_val<T>::array* {
-    return get<typename basic_val<T>::array>(v);
+  inline auto get_array(basic_val<T>* v) -> typename basic_val<T>::array_t* {
+    return get<typename basic_val<T>::array_t>(v);
   }
   //
   template<typename T>
-  inline auto get_object(basic_val<T> const& v) -> typename basic_val<T>::object const& {
-    return get<typename basic_val<T>::object>(v);
+  inline auto get_object(basic_val<T> const& v) -> typename basic_val<T>::object_t const& {
+    return get<typename basic_val<T>::object_t>(v);
   }
   template<typename T>
-  inline auto get_object(basic_val<T>& v) -> typename basic_val<T>::object& {
-    return get<typename basic_val<T>::object>(v);
+  inline auto get_object(basic_val<T>& v) -> typename basic_val<T>::object_t& {
+    return get<typename basic_val<T>::object_t>(v);
   }
 
   template<typename T>
-  inline auto get_object(basic_val<T> const* v) -> typename basic_val<T>::object const* {
-    return get<typename basic_val<T>::object>(v);
+  inline auto get_object(basic_val<T> const* v) -> typename basic_val<T>::object_t const* {
+    return get<typename basic_val<T>::object_t>(v);
   }
   template<typename T>
-  inline auto get_object(basic_val<T>* v) -> typename basic_val<T>::object* {
-    return get<typename basic_val<T>::object>(v);
+  inline auto get_object(basic_val<T>* v) -> typename basic_val<T>::object_t* {
+    return get<typename basic_val<T>::object_t>(v);
   }
 
   //
   template<typename T>
-  inline auto as_boolean(basic_val<T> const& v) -> typename basic_val<T>::boolean {
+  inline auto as_boolean(basic_val<T> const& v) -> typename basic_val<T>::bool_t {
     using V = basic_val<T>;
-    if (is_boolean(v)) return get<typename V::boolean>(v);
-    if (is_integer(v)) return get<typename V::integer>(v);
-    if (is_real(v)) return get<typename V::real>(v);
-    if (is_string(v)) return !get<typename V::string>(v).empty();
-    if (is_array(v)) return !get<typename V::array>(v).empty();
-    if (is_object(v)) return !get<typename V::object>(v).empty();
+    if (is_boolean(v)) return get<typename V::bool_t>(v);
+    if (is_integer(v)) return get<typename V::int_t>(v);
+    if (is_real(v)) return get<typename V::real_t>(v);
+    if (is_string(v)) return !get<typename V::string_t>(v).empty();
+    if (is_array(v)) return !get<typename V::array_t>(v).empty();
+    if (is_object(v)) return !get<typename V::object_t>(v).empty();
     return false;
   }
   template<typename T>
-  inline auto as_bool(basic_val<T> const& v) -> typename basic_val<T>::boolean {
+  inline auto as_bool(basic_val<T> const& v) -> typename basic_val<T>::bool_t {
     return as_boolean(v);
   }
 
   template<typename T>
-  inline auto as_integer(basic_val<T> const& v) -> typename basic_val<T>::integer {
+  inline auto as_integer(basic_val<T> const& v) -> typename basic_val<T>::int_t {
     using V = basic_val<T>;
-    if (is_boolean(v)) return get<typename V::boolean>(v);
-    if (is_integer(v)) return get<typename V::integer>(v);
-    if (is_real(v)) return get<typename V::real>(v);
-    if (is_string(v)) return get<typename V::string>(v).size();
-    if (is_array(v)) return get<typename V::array>(v).size();
-    if (is_object(v)) return get<typename V::object>(v).size();
+    if (is_boolean(v)) return get<typename V::bool_t>(v);
+    if (is_integer(v)) return get<typename V::int_t>(v);
+    if (is_real(v)) return get<typename V::real_t>(v);
+    if (is_string(v)) return get<typename V::string_t>(v).size();
+    if (is_array(v)) return get<typename V::array_t>(v).size();
+    if (is_object(v)) return get<typename V::object_t>(v).size();
     return 0;
   }
   template<typename T>
-  inline auto as_int(basic_val<T> const& v) -> typename basic_val<T>::integer {
+  inline auto as_int(basic_val<T> const& v) -> typename basic_val<T>::int_t {
     return as_integer(v);
   }
 
   template<typename T>
-  inline auto as_real(basic_val<T> const& v) -> typename basic_val<T>::real {
+  inline auto as_real(basic_val<T> const& v) -> typename basic_val<T>::real_t {
     using V = basic_val<T>;
-    if (is_boolean(v)) return get<typename V::boolean>(v);
-    if (is_integer(v)) return get<typename V::integer>(v);
-    if (is_real(v)) return get<typename V::real>(v);
-    if (is_string(v)) return get<typename V::string>(v).size();
-    if (is_array(v)) return get<typename V::array>(v).size();
-    if (is_object(v)) return get<typename V::object>(v).size();
+    if (is_boolean(v)) return get<typename V::bool_t>(v);
+    if (is_integer(v)) return get<typename V::int_t>(v);
+    if (is_real(v)) return get<typename V::real_t>(v);
+    if (is_string(v)) return get<typename V::string_t>(v).size();
+    if (is_array(v)) return get<typename V::array_t>(v).size();
+    if (is_object(v)) return get<typename V::object_t>(v).size();
     return 0.;
   }
   template<typename T>
-  inline auto as_double(basic_val<T> const& v) -> typename basic_val<T>::real {
+  inline auto as_double(basic_val<T> const& v) -> typename basic_val<T>::real_t {
     return as_real(v);
   }
 
@@ -353,9 +353,9 @@ namespace jsxx
       struct arith {};
       struct not_arith {};
       static U cast_impl(T const& v, arith) {
-        if (is_boolean(v)) return get<typename T::boolean>(v);
-        if (is_integer(v)) return get<typename T::integer>(v);
-        if (is_real(v)) return get<typename T::real>(v);
+        if (is_boolean(v)) return get<typename T::bool_t>(v);
+        if (is_integer(v)) return get<typename T::int_t>(v);
+        if (is_real(v)) return get<typename T::real_t>(v);
         throw type_error("invalid cast to arithmetic type");
       }
       static U cast_impl(T const& v, not_arith) {
@@ -420,7 +420,7 @@ namespace jsxx
       template<typename U>
       static auto find(U&& v, typename T::char_t const* key) -> decltype(v.o_.end()) {
         ensure(v, value::object);
-        return std::find_if(v.o_.begin(), v.o_.end(), [&key](typename T::pair const& p){
+        return std::find_if(v.o_.begin(), v.o_.end(), [&key](typename T::pair_t const& p){
           return p.first == key;
         });
       }
@@ -435,7 +435,7 @@ namespace jsxx
   }
 
   template<typename T>
-  inline bool in(basic_val<T> const& v, typename basic_val<T>::string const& key) {
+  inline bool in(basic_val<T> const& v, typename basic_val<T>::string_t const& key) {
     return in(v, key.c_str());
   }
 
@@ -451,12 +451,12 @@ namespace jsxx
     internal::ensure_any(v, value::object, value::array);
     if (is_object(v)) {
       if (is_string(key_or_index))
-        return in(v, get<typename basic_val<T>::string>(key_or_index).c_str());
+        return in(v, get<typename basic_val<T>::string_t>(key_or_index).c_str());
       throw type_error("key is not convertible to a string");
     }
     // else: array
     if (is_integer(key_or_index))
-      return in(v, get<typename basic_val<T>::integer>(key_or_index));
+      return in(v, get<typename basic_val<T>::int_t>(key_or_index));
     throw type_error("index is not convertible to an integer");
   }
 
@@ -468,7 +468,7 @@ namespace jsxx
   }
 
   template<typename T>
-  inline bool del(basic_val<T>& v, typename basic_val<T>::string const& key) {
+  inline bool del(basic_val<T>& v, typename basic_val<T>::string_t const& key) {
     return del(v, key.c_str());
   }
 
@@ -484,12 +484,12 @@ namespace jsxx
     internal::ensure_any(v, value::object, value::array);
     if (is_object(v)) {
       if (is_string(key_or_index))
-        return del(v, get<typename basic_val<T>::string>(key_or_index).c_str());
+        return del(v, get<typename basic_val<T>::string_t>(key_or_index).c_str());
       throw type_error("key is not convertible to a string");
     }
     // else: array
     if (is_integer(key_or_index))
-      return del(v, get<typename basic_val<T>::integer>(key_or_index));
+      return del(v, get<typename basic_val<T>::int_t>(key_or_index));
     throw type_error("index is not convertible to an integer");
   }
 

@@ -4,6 +4,8 @@
 #include <jsxx/core/basic_val.hpp>
 //
 
+//TODO: WIP......
+
 namespace jsxx
 {
 
@@ -14,13 +16,13 @@ namespace jsxx
       case value::null:
         o << "null"; break;
       case value::boolean:
-        o << (get<typename basic_val<Tag>::boolean>(v) ? "true" : "false"); break;
+        o << (get<typename basic_val<Tag>::bool_t>(v) ? "true" : "false"); break;
       case value::integer:
-        o << get<typename basic_val<Tag>::integer>(v); break;
+        o << get<typename basic_val<Tag>::int_t>(v); break;
       case value::real:
-        o << get<typename basic_val<Tag>::real>(v); break;
+        o << get<typename basic_val<Tag>::real_t>(v); break;
       case value::string:
-        o << "\"" << get<typename basic_val<Tag>::string>(v) << "\""; break;
+        o << "\"" << get<typename basic_val<Tag>::string_t>(v) << "\""; break;
       case value::array: {
         o << "[";
         bool first = true;

@@ -149,20 +149,20 @@ namespace jsxx
       switch (tok.type())
       {
         case token::string: {
-          typename val_t::string str;
+          typename val_t::string_t str;
           if (decode_handler<val_t>::string(tok.begin(), tok.end(), str) == 0)
             return str;
           error = -1;
           break;
         }
         case token::integer: {
-          typename val_t::integer integer;
+          typename val_t::int_t integer;
           if (decode_handler<val_t>::integer(tok.begin(), tok.end(), integer) == 0)
             return integer;
           // else fallback to real
         }
         case token::real: {
-          typename val_t::real real;
+          typename val_t::real_t real;
           if (decode_handler<val_t>::real(tok.begin(), tok.end(), real) == 0)
             return real;
           error = -1;
@@ -171,12 +171,12 @@ namespace jsxx
         case token::object: {
           std::size_t const num = tok.count()/2;
           auto o = val_t(empty::object, num);
-          auto& ro = get<typename val_t::object>(o);
+          auto& ro = get<typename val_t::object_t>(o);
           for (std::size_t i = 0; i < num; ++i) {
             auto const& t = tokens[start++];
-            typename val_t::string str;
+            typename val_t::string_t str;
             if (decode_handler<val_t>::key_string(t.begin(), t.end(), str) == 0)
-              ro[i] = std::move(typename val_t::pair(std::move(str), build(start))); // TODO: swap
+              ro[i] = std::move(typename val_t::pair_t(std::move(str), build(start))); // TODO: swap
             else {
               error = -1;
               break;
@@ -189,7 +189,7 @@ namespace jsxx
         case token::array: {
           std::size_t const num = tok.count();
           auto a = val_t(empty::array, num);
-          auto& ra = get<typename val_t::array>(a);
+          auto& ra = get<typename val_t::array_t>(a);
           for (std::size_t i = 0; i < num;++i)
             ra[i] = build(start);
           return a;

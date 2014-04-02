@@ -36,23 +36,23 @@ namespace jsxx
   {}
 
   template<typename T>
-  constexpr inline basic_val<T>::basic_val(boolean v)
+  constexpr inline basic_val<T>::basic_val(bool_t v)
     : type_(value::boolean), b_(v)
   {}
 
   template<typename T>
-  constexpr inline basic_val<T>::basic_val(integer v)
+  constexpr inline basic_val<T>::basic_val(int_t v)
     : type_(value::integer), i_(v)
   {}
 
   template<typename T>
-  constexpr inline basic_val<T>::basic_val(real v)
+  constexpr inline basic_val<T>::basic_val(real_t v)
     : type_(value::real), r_(v)
   {}
 
 
   template<typename T>
-  constexpr inline basic_val<T>::basic_val(string const& v)
+  constexpr inline basic_val<T>::basic_val(string_t const& v)
     : type_(value::string), s_(v)
   {}
 
@@ -63,13 +63,13 @@ namespace jsxx
 
 
   template<typename T>
-  constexpr inline basic_val<T>::basic_val(array const& v)
+  constexpr inline basic_val<T>::basic_val(array_t const& v)
     : type_(value::array), a_(v)
   {}
 
 
   template<typename T>
-  constexpr inline basic_val<T>::basic_val(object const& v)
+  constexpr inline basic_val<T>::basic_val(object_t const& v)
     : type_(value::object), o_(v)
   {}
 
@@ -100,26 +100,26 @@ namespace jsxx
 
 
   template<typename T>
-  constexpr inline basic_val<T>::basic_val(string&& v)
+  constexpr inline basic_val<T>::basic_val(string_t&& v)
     : type_(value::string), s_(std::move(v))
   {}
 
 
   template<typename T>
-  constexpr inline basic_val<T>::basic_val(array&& v)
+  constexpr inline basic_val<T>::basic_val(array_t&& v)
     : type_(value::array), a_(std::move(v))
   {}
 
 
   template<typename T>
-  constexpr inline basic_val<T>::basic_val(object&& v)
+  constexpr inline basic_val<T>::basic_val(object_t&& v)
     : type_(value::object), o_(std::move(v))
   {}
 
 
 
   template<typename T>
-  constexpr inline basic_val<T>::basic_val(std::initializer_list<pair> l)
+  constexpr inline basic_val<T>::basic_val(std::initializer_list<pair_t> l)
     : type_(value::object), o_(std::begin(l), std::end(l))
   {}
 
@@ -129,19 +129,6 @@ namespace jsxx
   {}
 
 
-
-//  template<typename T>
-//  template<typename U, typename>
-//  constexpr inline basic_val<T>::basic_val(U v)
-//    : type_(value::integer), i_(v)
-//  {}
-
-
-//  template<typename T>
-//  template<typename U, typename, typename>
-//  constexpr inline basic_val<T>::basic_val(U v)
-//    : type_(value::real), r_(v)
-//  {}
   template<typename T>
   template<typename U>
   constexpr inline basic_val<T>::basic_val(U v, typename std::enable_if<std::is_integral<U>::value>::type*)
@@ -177,7 +164,7 @@ namespace jsxx
     free();
     if (l.size()) {
       type_ = value::array;
-      new (&a_) array(std::begin(l), std::end(l));
+      new (&a_) array_t(std::begin(l), std::end(l));
     }
     return *this;
   }
@@ -187,7 +174,7 @@ namespace jsxx
   {
     free();
     type_ = value::array;
-    new (&a_) array{};
+    new (&a_) array_t{};
     return *this;
   }
 
@@ -196,7 +183,7 @@ namespace jsxx
   {
     free();
     type_ = value::object;
-    new (&o_) object{};
+    new (&o_) object_t{};
     return *this;
   }
 
@@ -237,25 +224,25 @@ namespace jsxx
 
 
   template<typename T>
-  inline basic_val<T>& basic_val<T>::operator[](string const& s)
+  inline basic_val<T>& basic_val<T>::operator[](string_t const& s)
   {
     if (!is_object(*this))
       throw type_error("basic_val is not an object");
-    auto it = std::find_if(o_.begin(), o_.end(), [&s](pair const& p){
+    auto it = std::find_if(o_.begin(), o_.end(), [&s](pair_t const& p){
       return p.first == s;
     });
     if (it != o_.end())
       return it->second;
-    o_.push_back(pair(s, self_t(nullptr))); // null_type() ??
+    o_.push_back(pair_t(s, self_t(nullptr))); // null_type() ??
     return o_.back().second;
   }
 
   template<typename T>
-  inline basic_val<T> const& basic_val<T>::operator[](string const& s) const
+  inline basic_val<T> const& basic_val<T>::operator[](string_t const& s) const
   {
     if (!is_object(*this))
       throw type_error("basic_val is not an object");
-    auto it = std::find_if(o_.begin(), o_.end(), [&s](pair const& p){
+    auto it = std::find_if(o_.begin(), o_.end(), [&s](pair_t const& p){
       return p.first == s;
     });
     if (it != o_.end())
@@ -268,14 +255,14 @@ namespace jsxx
   template<std::size_t N>
   inline basic_val<T>& basic_val<T>::operator[](char_t const(&s)[N])
   {
-    return this->operator[](string(s));
+    return this->operator[](string_t(s));
   }
 
   template<typename T>
   template<std::size_t N>
   inline basic_val<T> const& basic_val<T>::operator[](char_t const(&s)[N]) const
   {
-    return this->operator[](string(s));
+    return this->operator[](string_t(s));
   }
 
 
@@ -378,29 +365,29 @@ namespace jsxx
 
 
   template<typename T>
-  constexpr inline typename basic_val<T>::pair
+  constexpr inline typename basic_val<T>::pair_t
   basic_val<T>::k::operator=(std::initializer_list<self_t> list) const
   {
-    return pair(key, list);
+    return pair_t(key, list);
   }
 
 
   template<typename T>
   template<typename U>
   constexpr inline typename std::enable_if<
-    !std::is_same<U,std::initializer_list<typename basic_val<T>::pair>>::value
-    ,typename basic_val<T>::pair
+    !std::is_same<U,std::initializer_list<typename basic_val<T>::pair_t>>::value
+    ,typename basic_val<T>::pair_t
   >::type basic_val<T>::k::operator=(U&& t) const
   {
-    return pair(key, std::forward<U>(t));
+    return pair_t(key, std::forward<U>(t));
   }
 
 
   template<typename T>
-  constexpr inline typename basic_val<T>::pair
-  basic_val<T>::k::operator=(std::initializer_list<pair> list) const
+  constexpr inline typename basic_val<T>::pair_t
+  basic_val<T>::k::operator=(std::initializer_list<pair_t> list) const
   {
-    return pair(key, list);
+    return pair_t(key, list);
   }
 
 
@@ -410,9 +397,9 @@ namespace jsxx
   {
     switch (type_) {
       default: break;
-      case value::string: s_.~string(); break;
-      case value::array: a_.~array(); break;
-      case value::object: o_.~object(); break;
+      case value::string: s_.~string_t(); break;
+      case value::array: a_.~array_t(); break;
+      case value::object: o_.~object_t(); break;
     }
     type_ = value::null;
   }
@@ -438,9 +425,9 @@ namespace jsxx
       case value::boolean: b_ = v.b_; break;
       case value::integer: i_ = v.i_; break;
       case value::real: r_ = v.r_; break;
-      case value::string: new (&s_) string(v.s_); break;
-      case value::array: new (&a_) array(v.a_); break;
-      case value::object: new (&o_) object(v.o_); break;
+      case value::string: new (&s_) string_t(v.s_); break;
+      case value::array: new (&a_) array_t(v.a_); break;
+      case value::object: new (&o_) object_t(v.o_); break;
     }
   }
 
@@ -465,9 +452,9 @@ namespace jsxx
       case value::boolean: b_ = std::move(v.b_); break;
       case value::integer: i_ = std::move(v.i_); break;
       case value::real: r_ = std::move(v.r_); break;
-      case value::string: new (&s_) string(std::move(v.s_)); break;
-      case value::array: new (&a_) array(std::move(v.a_)); break;
-      case value::object: new (&o_) object(std::move(v.o_)); break;
+      case value::string: new (&s_) string_t(std::move(v.s_)); break;
+      case value::array: new (&a_) array_t(std::move(v.a_)); break;
+      case value::object: new (&o_) object_t(std::move(v.o_)); break;
     }
   }
 

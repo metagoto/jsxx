@@ -537,8 +537,8 @@ lest::test const specs[] =
 
     auto is = items(a);
     for (auto const& v : is) {
-      get<val::array>(tk).push_back(v.first);
-      get<val::array>(tv).push_back(v.second);
+      get<val::array_t>(tk).push_back(v.first);
+      get<val::array_t>(tv).push_back(v.second);
     }
 
     EXPECT(tk == ks);
@@ -661,7 +661,7 @@ lest::test const specs[] =
       v = "s";
       b = v;
       EXPECT(b == true);
-      val::string s = v;
+      val::string_t s = v;
       EXPECT(s.size() == 1);
 
       v = {};
@@ -672,19 +672,19 @@ lest::test const specs[] =
       v[0] = 0;
       b = v;
       EXPECT(b == true);
-      val::array a = v;
-      a = get<val::array>(v);
+      val::array_t a = v;
+      a = get<val::array_t>(v);
       EXPECT(a.size() == 1);
 
       v = empty::object;
       b = v;
       EXPECT(b == false);
-      val::object o = v;
+      val::object_t o = v;
       EXPECT(o.size() == 0);
       v["k"] = 0;
       b = v;
       EXPECT(b == true);
-      o = get<val::object>(v);
+      o = get<val::object_t>(v);
       EXPECT(o.size() == 1);
     }
     {
