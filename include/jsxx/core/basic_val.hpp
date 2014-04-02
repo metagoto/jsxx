@@ -51,13 +51,10 @@ namespace jsxx
     constexpr basic_val(std::initializer_list<pair>);
     constexpr basic_val(std::initializer_list<self_t>);
 
-    template<typename T
-            ,class = typename std::enable_if<std::is_integral<T>::value>::type>
-    constexpr basic_val(T);
-    template<typename T
-            ,class = typename std::enable_if<std::is_floating_point<T>::value>::type
-            ,typename = void>
-    constexpr basic_val(T);
+    template<typename T>
+    constexpr basic_val(T, typename std::enable_if<std::is_integral<T>::value>::type* = 0);
+    template<typename T>
+    constexpr basic_val(T, typename std::enable_if<std::is_floating_point<T>::value>::type* = 0);
 
     ~basic_val();
 
@@ -66,7 +63,6 @@ namespace jsxx
     basic_val& operator=(std::initializer_list<self_t>);
     basic_val& operator=(empty::array_t);
     basic_val& operator=(empty::object_t);
-    //TODO: add int/float type coercion for op=
 
     value type() const;
 

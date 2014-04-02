@@ -130,19 +130,30 @@ namespace jsxx
 
 
 
+//  template<typename T>
+//  template<typename U, typename>
+//  constexpr inline basic_val<T>::basic_val(U v)
+//    : type_(value::integer), i_(v)
+//  {}
+
+
+//  template<typename T>
+//  template<typename U, typename, typename>
+//  constexpr inline basic_val<T>::basic_val(U v)
+//    : type_(value::real), r_(v)
+//  {}
   template<typename T>
-  template<typename U, typename>
-  constexpr inline basic_val<T>::basic_val(U v)
+  template<typename U>
+  constexpr inline basic_val<T>::basic_val(U v, typename std::enable_if<std::is_integral<U>::value>::type*)
     : type_(value::integer), i_(v)
   {}
 
 
   template<typename T>
-  template<typename U, typename, typename>
-  constexpr inline basic_val<T>::basic_val(U v)
+  template<typename U>
+  constexpr inline basic_val<T>::basic_val(U v, typename std::enable_if<std::is_floating_point<U>::value>::type*)
     : type_(value::real), r_(v)
   {}
-
 
 
   template<typename T>

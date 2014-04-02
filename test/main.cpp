@@ -22,8 +22,8 @@ lest::test const specs[] =
     EXPECT(!is_object(a));
     EXPECT(!is_number(a));
 
-    val k = {};
-    EXPECT(is_null(k));
+    val z = {};
+    EXPECT(is_null(z));
 
     val b = nullptr;
     EXPECT(is_null(b));
@@ -53,6 +53,13 @@ lest::test const specs[] =
 
     val j = empty::object;
     EXPECT(is_object(j));
+
+    val k = 1.f;
+    EXPECT(is_real(k));
+
+    val l = (std::uint8_t)1;
+    EXPECT(is_integer(l));
+
   }},
 
   {"assignment", [] {
@@ -93,6 +100,12 @@ lest::test const specs[] =
 
     a = empty::object;
     EXPECT(is_object(a));
+
+    a = 1.f;
+    EXPECT(is_real(a));
+
+    a = (std::uint8_t)1;
+    EXPECT(is_integer(a));
   }},
 
   {"operators", [] {
