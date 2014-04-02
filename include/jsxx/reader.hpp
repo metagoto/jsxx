@@ -18,7 +18,7 @@ namespace jsxx
 
   template<typename Val, typename It
           ,template<class> class Grammar = grammar::json_strict>
-  Val read(It beg, It end) {
+  Val read(It beg, It const end) {
     parser<Val, It, Grammar> p;
     return p.parse(beg, end);
   }
@@ -41,47 +41,34 @@ namespace jsxx
   // non throwing. return json null if parsing fails
   template<typename Val, typename Str
           ,template<class> class Grammar = grammar::json_strict>
-  Val read(Str const& s, bool& success) {
-    typedef typename Str::const_iterator it_t;
-    parser<Val, it_t, Grammar> p;
-    success = true;
-    try { return p.parse(s.cbegin(), s.cend()); }
+  bool read(Str const& s, Val& v) {
+    try { v = read<Val, Str, Grammar>(s); return true; }
     catch (...) { }
-    success = false;
-    return nullptr;
+    return false;
   }
 
   template<typename Val, typename It
           ,template<class> class Grammar = grammar::json_strict>
-  Val read(It beg, It end, bool& success) {
-    parser<Val, It, Grammar> p;
-    success = true;
-    try { return p.parse(beg, end); }
+  bool read(It beg, It const end, Val& v) {
+    try { v = read<Val, It, Grammar>(beg, end); return true; }
     catch (...) { }
-    success = false;
-    return nullptr;
+    return false;
   }
 
   template<typename Val, typename Char, std::size_t N
           ,template<class> class Grammar = grammar::json_strict>
-  Val read(Char const (&s)[N], bool& success) {
-    parser<Val, Char const*, Grammar> p;
-    success = true;
-    try { return p.parse(s, s+N-1); }
+  bool read(Char const (&s)[N], Val& v) {
+    try { v = read<Val, Char, N, Grammar>(s); return true; }
     catch (...) { }
-    success = false;
-    return nullptr;
+    return false;
   }
 
   template<typename Val, typename Char
           ,template<class> class Grammar = grammar::json_strict>
-  Val read(Char const* s, std::size_t len, bool& success) {
-    parser<Val, Char const*, Grammar> p;
-    success = true;
-    try { return p.parse(s, s+len); }
+  bool read(Char const* s, std::size_t len, Val& v) {
+    try { v = read<Val, Char, Grammar>(s, len); return true; }
     catch (...) { }
-    success = false;
-    return nullptr;
+    return false;
   }
 
 

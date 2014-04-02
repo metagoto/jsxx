@@ -717,37 +717,52 @@ lest::test const specs[] =
        auto v = read<val>(s);
        EXPECT(is_array(v));
 
-       bool b = false;
-       v = read<val>(s, b);
+       bool b = read(s, v);
+       EXPECT(b);
+
+       v = read<val>(s.begin(), s.end());
+       EXPECT(is_array(v));
+
+       b = read(s.begin(), s.end(), v);
        EXPECT(b);
 
        s = R"("should FAIL: \i")";
        EXPECT_THROWS((read<val>(s), true));
-       v = read<val>(s, b);
+       b = read(s, v);
        EXPECT(!b);
 
        s = R"("\")";
        EXPECT_THROWS((read<val>(s), true));
+       b = read(s, v);
+       EXPECT(!b);
 
        s = R"("ok")";
        v = read<val>(s);
        EXPECT(is_string(v));
+       b = read(s, v);
+       EXPECT(b);
      }
      {
        char const* s = "[1,2,3]";
        auto v = read<val>(s, s+std::strlen(s));
        EXPECT(is_array(v));
+       bool b = read(s, s+std::strlen(s), v);
+       EXPECT(b);
      }
      {
        char const s[] = "[1,2,3]";
        auto v = read<val>(s);
        EXPECT(is_array(v));
+       bool b = read(s, v);
+       EXPECT(b);
      }
      {
        char const* s = "[1,2,3]";
        auto v = read<val>(s, std::strlen(s));
        EXPECT(is_array(v));
        EXPECT_THROWS((read<val>(s, std::strlen(s)-1), true));
+       bool b = read(s, std::strlen(s), v);
+       EXPECT(b);
      }
 
   }},
