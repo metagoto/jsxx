@@ -58,11 +58,11 @@ namespace jsxx
 
     ~basic_val() noexcept;
 
-    basic_val& operator=(self_t const&);
-    basic_val& operator=(self_t&&) noexcept;
-    basic_val& operator=(std::initializer_list<self_t>);
-    basic_val& operator=(empty::array_t);
-    basic_val& operator=(empty::object_t);
+    basic_val& operator=(self_t const&) &;
+    basic_val& operator=(self_t&&) & noexcept;
+    basic_val& operator=(std::initializer_list<self_t>) &;
+    basic_val& operator=(empty::array_t) &;
+    basic_val& operator=(empty::object_t) &;
 
     value type() const noexcept;
 
@@ -121,8 +121,8 @@ namespace jsxx
     };
 
     void free() noexcept;
-    void copy(self_t const& v);
-    void move(self_t&& v) noexcept;
+    void copy(self_t const&);
+    void move(self_t&&) noexcept;
 
     template<class, class, class> friend struct internal::access;
   };

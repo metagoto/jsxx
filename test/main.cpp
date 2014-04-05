@@ -11,9 +11,7 @@ using namespace jsxx;
 
 
 static_assert(std::is_nothrow_move_constructible<val>::value,"");
-
-
-
+static_assert(std::is_nothrow_move_assignable<val>::value,"");
 
 
 

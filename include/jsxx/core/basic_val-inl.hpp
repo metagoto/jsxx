@@ -103,7 +103,7 @@ namespace jsxx
     : type_(value::real), r_(v) {}
 
   template<typename T>
-  inline basic_val<T>& basic_val<T>::operator=(self_t const& v)
+  inline basic_val<T>& basic_val<T>::operator=(self_t const& v) &
   {
     if (this != &v)
       copy(v);
@@ -111,14 +111,14 @@ namespace jsxx
   }
 
   template<typename T>
-  inline basic_val<T>& basic_val<T>::operator=(self_t&& v) noexcept
+  inline basic_val<T>& basic_val<T>::operator=(self_t&& v) & noexcept
   {
     move(std::move(v));
     return *this;
   }
 
   template<typename T>
-  inline basic_val<T>& basic_val<T>::operator=(std::initializer_list<self_t> l)
+  inline basic_val<T>& basic_val<T>::operator=(std::initializer_list<self_t> l) &
   {
     free();
     if (l.size()) {
@@ -129,7 +129,7 @@ namespace jsxx
   }
 
   template<typename T>
-  inline basic_val<T>& basic_val<T>::operator=(empty::array_t)
+  inline basic_val<T>& basic_val<T>::operator=(empty::array_t) &
   {
     free();
     type_ = value::array;
@@ -138,7 +138,7 @@ namespace jsxx
   }
 
   template<typename T>
-  inline basic_val<T>& basic_val<T>::operator=(empty::object_t)
+  inline basic_val<T>& basic_val<T>::operator=(empty::object_t) &
   {
     free();
     type_ = value::object;
