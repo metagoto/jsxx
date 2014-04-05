@@ -32,22 +32,21 @@ namespace jsxx
 
   using val = basic_val<simple_val_tag>;
 
-  inline constexpr val::k operator"" _k(val::char_t const* s, std::size_t)
+  inline constexpr val::k operator"" _k(val::char_t const* s, std::size_t) noexcept
   {
     return val::k(s);
   }
-
 
   template<>
   struct decode_handler<val>
   {
     template<typename It, typename T>
-    static int integer(It beg, It end, T& result) {
+    static int integer(It beg, It end, T& result) noexcept {
       return string_to_integer(beg, end, result);
     }
 
     template<typename It, typename T>
-    static int real(It beg, It end, T& result) {
+    static int real(It beg, It end, T& result) noexcept {
       return string_to_real(beg, end, result);
     }
 

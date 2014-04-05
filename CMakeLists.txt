@@ -21,8 +21,6 @@ create_test(strings strings.cpp)
 create_test(perf perf.cpp)
 
 #create_test(perf-jsoncpp perf-jsoncpp.cpp)
-#create_test(perf-dropboxjson11 perf-dropboxjson11.cpp)
-#create_test(perf-hjiangjsonxx perf-hjiangjsonxx.cpp)
 
 #create_test(numconv numconv.cpp)
 

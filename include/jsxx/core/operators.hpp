@@ -9,67 +9,67 @@ namespace jsxx
 
   template<typename T, typename Tag>
   inline typename std::enable_if<!std::is_same<T,char const*>::value, bool>::type
-  operator==(basic_val<Tag> const& v, T const& a) {
+  operator==(basic_val<Tag> const& v, T const& a) noexcept {
     if (auto p = get<T>(&v)) return *p == a;
     return false;
   }
   template<typename T, typename Tag>
   inline typename std::enable_if<!std::is_same<T,char const*>::value, bool>::type
-  operator==(T const& a, basic_val<Tag> const& v) {
+  operator==(T const& a, basic_val<Tag> const& v) noexcept {
     return v == a;
   }
 
   template<typename T, typename Tag>
   inline typename std::enable_if<!std::is_same<T,char const*>::value, bool>::type
-  operator!=(basic_val<Tag> const& v, T const& a) {
+  operator!=(basic_val<Tag> const& v, T const& a) noexcept {
     if (auto p = get<T>(&v)) return *p != a;
     return true;
   }
   template<typename T, typename Tag>
   inline typename std::enable_if<!std::is_same<T,char const*>::value, bool>::type
-  operator!=(T const& a, basic_val<Tag> const& v) {
+  operator!=(T const& a, basic_val<Tag> const& v) noexcept {
     return v != a;
   }
 
   // overloads for nullptr
   template<typename T>
-  inline bool operator==(std::nullptr_t, basic_val<T> const& v) {
+  inline bool operator==(std::nullptr_t, basic_val<T> const& v) noexcept {
     return is_null(v);
   }
   template<typename T>
-  inline bool operator==(basic_val<T> const& v, std::nullptr_t) {
+  inline bool operator==(basic_val<T> const& v, std::nullptr_t) noexcept {
     return is_null(v);
   }
 
   template<typename T>
-  inline bool operator!=(std::nullptr_t, basic_val<T> const& v) {
+  inline bool operator!=(std::nullptr_t, basic_val<T> const& v) noexcept {
     return !is_null(v);
   }
   template<typename T>
-  inline bool operator!=(basic_val<T> const& v, std::nullptr_t) {
+  inline bool operator!=(basic_val<T> const& v, std::nullptr_t) noexcept {
     return !is_null(v);
   }
 
   // overload for char_t const*
   template<typename T>
-  inline bool operator==(basic_val<T> const& v, typename basic_val<T>::char_t const* a) {
+  inline bool operator==(basic_val<T> const& v, typename basic_val<T>::char_t const* a) noexcept {
     if (auto p = get<typename basic_val<T>::string_t>(&v))
       return p->compare(a) == 0;
     return false;
   }
   template<typename T>
-  inline bool operator==(typename basic_val<T>::char_t const* a, basic_val<T> const& v) {
+  inline bool operator==(typename basic_val<T>::char_t const* a, basic_val<T> const& v) noexcept {
     return v == a;
   }
 
   template<typename T>
-  inline bool operator!=(basic_val<T> const& v, typename basic_val<T>::char_t const* a) {
+  inline bool operator!=(basic_val<T> const& v, typename basic_val<T>::char_t const* a) noexcept {
     if (auto p = get<typename basic_val<T>::string_t>(&v))
       return p->compare(a) != 0;
     return true;
   }
   template<typename T>
-  inline bool operator!=(typename basic_val<T>::char_t const* a, basic_val<T> const& v) {
+  inline bool operator!=(typename basic_val<T>::char_t const* a, basic_val<T> const& v) noexcept {
     return v != a;
   }
 

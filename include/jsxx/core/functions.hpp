@@ -7,47 +7,47 @@ namespace jsxx
 {
 
   template<typename T>
-  inline bool is_null(basic_val<T> const& v)
+  inline bool is_null(basic_val<T> const& v) noexcept
   { return v.type() == value::null; }
 
   template<typename T>
-  inline bool is_boolean(basic_val<T> const& v)
+  inline bool is_boolean(basic_val<T> const& v) noexcept
   { return v.type() == value::boolean; }
 
   template<typename T>
-  inline bool is_bool(basic_val<T> const& v)
+  inline bool is_bool(basic_val<T> const& v) noexcept
   { return is_boolean(v); }
 
   template<typename T>
-  inline bool is_integer(basic_val<T> const& v)
+  inline bool is_integer(basic_val<T> const& v) noexcept
   { return v.type() == value::integer; }
 
   template<typename T>
-  inline bool is_int(basic_val<T> const& v)
+  inline bool is_int(basic_val<T> const& v) noexcept
   { return is_integer(v); }
 
   template<typename T>
-  inline bool is_real(basic_val<T> const& v)
+  inline bool is_real(basic_val<T> const& v) noexcept
   { return v.type() == value::real; }
 
   template<typename T>
-  inline bool is_double(basic_val<T> const& v)
+  inline bool is_double(basic_val<T> const& v) noexcept
   { return is_real(v); }
 
   template<typename T>
-  inline bool is_string(basic_val<T> const& v)
+  inline bool is_string(basic_val<T> const& v) noexcept
   { return v.type() == value::string; }
 
   template<typename T>
-  inline bool is_array(basic_val<T> const& v)
+  inline bool is_array(basic_val<T> const& v) noexcept
   { return v.type() == value::array; }
 
   template<typename T>
-  inline bool is_object(basic_val<T> const& v)
+  inline bool is_object(basic_val<T> const& v) noexcept
   { return v.type() == value::object; }
 
   template<typename T>
-  inline bool is_number(basic_val<T> const& v)
+  inline bool is_number(basic_val<T> const& v) noexcept
   { return is_integer(v) || is_real(v); }
 
 
@@ -62,7 +62,7 @@ namespace jsxx
 
     template<typename T>
     struct access<T, get_tag, typename T::bool_t> {
-      static cqual<T, typename T::bool_t>* get(T& v) {
+      static cqual<T, typename T::bool_t>* get(T& v) noexcept {
         if (v.type() == value::boolean)
           return &v.b_;
         return nullptr;
@@ -70,7 +70,7 @@ namespace jsxx
     };
     template<typename T>
     struct access<T, get_tag, typename T::int_t> {
-      static cqual<T, typename T::int_t>* get(T& v) {
+      static cqual<T, typename T::int_t>* get(T& v) noexcept {
         if (v.type() == value::integer)
           return &v.i_;
         return nullptr;
@@ -78,7 +78,7 @@ namespace jsxx
     };
     template<typename T>
     struct access<T, get_tag, typename T::real_t> {
-      static cqual<T, typename T::real_t>* get(T& v) {
+      static cqual<T, typename T::real_t>* get(T& v) noexcept {
         if (v.type() == value::real)
           return &v.r_;
         return nullptr;
@@ -86,7 +86,7 @@ namespace jsxx
     };
     template<typename T>
     struct access<T, get_tag, typename T::string_t> {
-      static cqual<T, typename T::string_t>* get(T& v) {
+      static cqual<T, typename T::string_t>* get(T& v) noexcept {
         if (v.type() == value::string)
           return &v.s_;
         return nullptr;
@@ -94,7 +94,7 @@ namespace jsxx
     };
     template<typename T>
     struct access<T, get_tag, typename T::array_t> {
-      static cqual<T, typename T::array_t>* get(T& v) {
+      static cqual<T, typename T::array_t>* get(T& v) noexcept {
         if (v.type() == value::array)
           return &v.a_;
         return nullptr;
@@ -102,7 +102,7 @@ namespace jsxx
     };
     template<typename T>
     struct access<T, get_tag, typename T::object_t> {
-      static cqual<T, typename T::object_t>* get(T& v) {
+      static cqual<T, typename T::object_t>* get(T& v) noexcept {
         if (v.type() == value::object)
           return &v.o_;
         return nullptr;
@@ -128,12 +128,12 @@ namespace jsxx
   }
 
   template<typename R, typename T>
-  inline R* get(basic_val<T>* v) {
+  inline R* get(basic_val<T>* v) noexcept {
     return v ? internal::access<basic_val<T>, internal::get_tag, R>::get(*v) : nullptr;
   }
 
   template<typename R, typename T>
-  inline R const* get(basic_val<T> const* v) {
+  inline R const* get(basic_val<T> const* v) noexcept {
     return v ? internal::access<basic_val<T> const, internal::get_tag, R>::get(*v) : nullptr;
   }
 
@@ -157,19 +157,19 @@ namespace jsxx
   }
 
   template<typename T>
-  inline auto get_boolean(basic_val<T> const* v) -> typename basic_val<T>::bool_t const* {
+  inline auto get_boolean(basic_val<T> const* v) noexcept -> typename basic_val<T>::bool_t const* {
     return get<typename basic_val<T>::bool_t>(v);
   }
   template<typename T>
-  inline auto get_boolean(basic_val<T>* v) -> typename basic_val<T>::bool_t* {
+  inline auto get_boolean(basic_val<T>* v) noexcept -> typename basic_val<T>::bool_t* {
     return get<typename basic_val<T>::bool_t>(v);
   }
   template<typename T>
-  inline auto get_bool(basic_val<T> const* v) -> typename basic_val<T>::bool_t const* {
+  inline auto get_bool(basic_val<T> const* v) noexcept -> typename basic_val<T>::bool_t const* {
     return get_boolean(v);
   }
   template<typename T>
-  inline auto get_bool(basic_val<T>* v) -> typename basic_val<T>::bool_t* {
+  inline auto get_bool(basic_val<T>* v) noexcept -> typename basic_val<T>::bool_t* {
     return get_boolean(v);
   }
   //
@@ -191,19 +191,19 @@ namespace jsxx
   }
 
   template<typename T>
-  inline auto get_integer(basic_val<T> const* v) -> typename basic_val<T>::int_t const* {
+  inline auto get_integer(basic_val<T> const* v) noexcept -> typename basic_val<T>::int_t const* {
     return get<typename basic_val<T>::int_t>(v);
   }
   template<typename T>
-  inline auto get_integer(basic_val<T>* v) -> typename basic_val<T>::int_t* {
+  inline auto get_integer(basic_val<T>* v) noexcept -> typename basic_val<T>::int_t* {
     return get<typename basic_val<T>::int_t>(v);
   }
   template<typename T>
-  inline auto get_int(basic_val<T> const* v) -> typename basic_val<T>::int_t const* {
+  inline auto get_int(basic_val<T> const* v) noexcept -> typename basic_val<T>::int_t const* {
     return get_integer(v);
   }
   template<typename T>
-  inline auto get_int(basic_val<T>* v) -> typename basic_val<T>::int_t* {
+  inline auto get_int(basic_val<T>* v) noexcept -> typename basic_val<T>::int_t* {
     return get_integer(v);
   }
   //
@@ -225,19 +225,19 @@ namespace jsxx
   }
 
   template<typename T>
-  inline auto get_real(basic_val<T> const* v) -> typename basic_val<T>::real_t const* {
+  inline auto get_real(basic_val<T> const* v) noexcept -> typename basic_val<T>::real_t const* {
     return get<typename basic_val<T>::real_t>(v);
   }
   template<typename T>
-  inline auto get_real(basic_val<T>* v) -> typename basic_val<T>::real_t* {
+  inline auto get_real(basic_val<T>* v) noexcept -> typename basic_val<T>::real_t* {
     return get<typename basic_val<T>::real_t>(v);
   }
   template<typename T>
-  inline auto get_double(basic_val<T> const* v) -> typename basic_val<T>::real_t const* {
+  inline auto get_double(basic_val<T> const* v) noexcept -> typename basic_val<T>::real_t const* {
     return get_real(v);
   }
   template<typename T>
-  inline auto get_double(basic_val<T>* v) -> typename basic_val<T>::real_t* {
+  inline auto get_double(basic_val<T>* v) noexcept -> typename basic_val<T>::real_t* {
     return get_real(v);
   }
   //
@@ -251,11 +251,11 @@ namespace jsxx
   }
 
   template<typename T>
-  inline auto get_string(basic_val<T> const* v) -> typename basic_val<T>::string_t const* {
+  inline auto get_string(basic_val<T> const* v) noexcept -> typename basic_val<T>::string_t const* {
     return get<typename basic_val<T>::string_t>(v);
   }
   template<typename T>
-  inline auto get_string(basic_val<T>* v) -> typename basic_val<T>::string_t* {
+  inline auto get_string(basic_val<T>* v) noexcept -> typename basic_val<T>::string_t* {
     return get<typename basic_val<T>::string_t>(v);
   }
   //
@@ -269,11 +269,11 @@ namespace jsxx
   }
 
   template<typename T>
-  inline auto get_array(basic_val<T> const* v) -> typename basic_val<T>::array_t const* {
+  inline auto get_array(basic_val<T> const* v) noexcept -> typename basic_val<T>::array_t const* {
     return get<typename basic_val<T>::array_t>(v);
   }
   template<typename T>
-  inline auto get_array(basic_val<T>* v) -> typename basic_val<T>::array_t* {
+  inline auto get_array(basic_val<T>* v) noexcept -> typename basic_val<T>::array_t* {
     return get<typename basic_val<T>::array_t>(v);
   }
   //
@@ -287,17 +287,17 @@ namespace jsxx
   }
 
   template<typename T>
-  inline auto get_object(basic_val<T> const* v) -> typename basic_val<T>::object_t const* {
+  inline auto get_object(basic_val<T> const* v) noexcept -> typename basic_val<T>::object_t const* {
     return get<typename basic_val<T>::object_t>(v);
   }
   template<typename T>
-  inline auto get_object(basic_val<T>* v) -> typename basic_val<T>::object_t* {
+  inline auto get_object(basic_val<T>* v) noexcept -> typename basic_val<T>::object_t* {
     return get<typename basic_val<T>::object_t>(v);
   }
 
   //
   template<typename T>
-  inline auto as_boolean(basic_val<T> const& v) -> typename basic_val<T>::bool_t {
+  inline auto as_boolean(basic_val<T> const& v) noexcept -> typename basic_val<T>::bool_t {
     using V = basic_val<T>;
     if (is_boolean(v)) return get<typename V::bool_t>(v);
     if (is_integer(v)) return get<typename V::int_t>(v);
@@ -308,12 +308,12 @@ namespace jsxx
     return false;
   }
   template<typename T>
-  inline auto as_bool(basic_val<T> const& v) -> typename basic_val<T>::bool_t {
+  inline auto as_bool(basic_val<T> const& v) noexcept -> typename basic_val<T>::bool_t {
     return as_boolean(v);
   }
 
   template<typename T>
-  inline auto as_integer(basic_val<T> const& v) -> typename basic_val<T>::int_t {
+  inline auto as_integer(basic_val<T> const& v) noexcept -> typename basic_val<T>::int_t {
     using V = basic_val<T>;
     if (is_boolean(v)) return get<typename V::bool_t>(v);
     if (is_integer(v)) return get<typename V::int_t>(v);
@@ -324,12 +324,12 @@ namespace jsxx
     return 0;
   }
   template<typename T>
-  inline auto as_int(basic_val<T> const& v) -> typename basic_val<T>::int_t {
+  inline auto as_int(basic_val<T> const& v) noexcept -> typename basic_val<T>::int_t {
     return as_integer(v);
   }
 
   template<typename T>
-  inline auto as_real(basic_val<T> const& v) -> typename basic_val<T>::real_t {
+  inline auto as_real(basic_val<T> const& v) noexcept -> typename basic_val<T>::real_t {
     using V = basic_val<T>;
     if (is_boolean(v)) return get<typename V::bool_t>(v);
     if (is_integer(v)) return get<typename V::int_t>(v);
@@ -340,7 +340,7 @@ namespace jsxx
     return 0.;
   }
   template<typename T>
-  inline auto as_double(basic_val<T> const& v) -> typename basic_val<T>::real_t {
+  inline auto as_double(basic_val<T> const& v) noexcept -> typename basic_val<T>::real_t {
     return as_real(v);
   }
 

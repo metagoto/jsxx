@@ -41,7 +41,7 @@ namespace jsxx
   // non throwing. return json null if parsing fails
   template<typename Val, typename Str
           ,template<class> class Grammar = grammar::json_strict>
-  bool read(Str const& s, Val& v) {
+  bool read(Str const& s, Val& v) noexcept {
     try { v = read<Val, Str, Grammar>(s); return true; }
     catch (...) { }
     return false;
@@ -49,7 +49,7 @@ namespace jsxx
 
   template<typename Val, typename It
           ,template<class> class Grammar = grammar::json_strict>
-  bool read(It beg, It const end, Val& v) {
+  bool read(It beg, It const end, Val& v) noexcept {
     try { v = read<Val, It, Grammar>(beg, end); return true; }
     catch (...) { }
     return false;
@@ -57,7 +57,7 @@ namespace jsxx
 
   template<typename Val, typename Char, std::size_t N
           ,template<class> class Grammar = grammar::json_strict>
-  bool read(Char const (&s)[N], Val& v) {
+  bool read(Char const (&s)[N], Val& v) noexcept {
     try { v = read<Val, Char, N, Grammar>(s); return true; }
     catch (...) { }
     return false;
@@ -65,7 +65,7 @@ namespace jsxx
 
   template<typename Val, typename Char
           ,template<class> class Grammar = grammar::json_strict>
-  bool read(Char const* s, std::size_t len, Val& v) {
+  bool read(Char const* s, std::size_t len, Val& v) noexcept {
     try { v = read<Val, Char, Grammar>(s, len); return true; }
     catch (...) { }
     return false;

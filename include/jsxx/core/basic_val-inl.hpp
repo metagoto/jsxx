@@ -11,137 +11,96 @@ namespace jsxx
 {
 
   template<typename T>
-  constexpr inline basic_val<T>::basic_val()
-    : type_(value::null)
-  {}
+  constexpr inline basic_val<T>::basic_val() noexcept
+    : type_(value::null) {}
 
   template<typename T>
   inline basic_val<T>::basic_val(self_t const& v)
     : type_(value::null)
-  {
-    copy(v);
-  }
+  { copy(v); }
 
   template<typename T>
-  inline basic_val<T>::basic_val(self_t&& v)
+  inline basic_val<T>::basic_val(self_t&& v) noexcept
     : type_(value::null)
-  {
-    move(std::move(v));
-  }
-
+  { move(std::move(v)); }
 
   template<typename T>
-  constexpr inline basic_val<T>::basic_val(std::nullptr_t)
-    : type_(value::null)
-  {}
+  constexpr inline basic_val<T>::basic_val(std::nullptr_t) noexcept
+    : type_(value::null) {}
 
   template<typename T>
-  constexpr inline basic_val<T>::basic_val(bool_t v)
-    : type_(value::boolean), b_(v)
-  {}
+  constexpr inline basic_val<T>::basic_val(bool_t v) noexcept
+    : type_(value::boolean), b_(v) {}
 
   template<typename T>
-  constexpr inline basic_val<T>::basic_val(int_t v)
-    : type_(value::integer), i_(v)
-  {}
+  constexpr inline basic_val<T>::basic_val(int_t v) noexcept
+    : type_(value::integer), i_(v) {}
 
   template<typename T>
-  constexpr inline basic_val<T>::basic_val(real_t v)
-    : type_(value::real), r_(v)
-  {}
-
+  constexpr inline basic_val<T>::basic_val(real_t v) noexcept
+    : type_(value::real), r_(v) {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(string_t const& v)
-    : type_(value::string), s_(v)
-  {}
+    : type_(value::string), s_(v) {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(char_t const* v)
-    : type_(value::string), s_(v)
-  {}
-
+    : type_(value::string), s_(v) {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(array_t const& v)
-    : type_(value::array), a_(v)
-  {}
-
+    : type_(value::array), a_(v) {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(object_t const& v)
-    : type_(value::object), o_(v)
-  {}
-
-
+    : type_(value::object), o_(v) {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(empty::array_t)
-    : type_(value::array), a_()
-  {}
-
+    : type_(value::array), a_() {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(empty::object_t)
-    : type_(value::object), o_()
-  {}
-
+    : type_(value::object), o_() {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(empty::array_t, std::size_t const& v)
-    : type_(value::array), a_(v)
-  {}
-
+    : type_(value::array), a_(v) {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(empty::object_t, std::size_t const& v)
-    : type_(value::object), o_(v)
-  {}
-
+    : type_(value::object), o_(v) {}
 
   template<typename T>
-  constexpr inline basic_val<T>::basic_val(string_t&& v)
-    : type_(value::string), s_(std::move(v))
-  {}
-
+  constexpr inline basic_val<T>::basic_val(string_t&& v) noexcept
+    : type_(value::string), s_(std::move(v)) {}
 
   template<typename T>
-  constexpr inline basic_val<T>::basic_val(array_t&& v)
-    : type_(value::array), a_(std::move(v))
-  {}
-
+  constexpr inline basic_val<T>::basic_val(array_t&& v) noexcept
+    : type_(value::array), a_(std::move(v)) {}
 
   template<typename T>
-  constexpr inline basic_val<T>::basic_val(object_t&& v)
-    : type_(value::object), o_(std::move(v))
-  {}
-
-
+  constexpr inline basic_val<T>::basic_val(object_t&& v) noexcept
+    : type_(value::object), o_(std::move(v)) {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(std::initializer_list<pair_t> l)
-    : type_(value::object), o_(std::begin(l), std::end(l))
-  {}
+    : type_(value::object), o_(std::begin(l), std::end(l)) {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(std::initializer_list<self_t> l)
-    : type_(value::array), a_(std::begin(l), std::end(l))
-  {}
-
+    : type_(value::array), a_(std::begin(l), std::end(l)) {}
 
   template<typename T>
   template<typename U>
-  constexpr inline basic_val<T>::basic_val(U v, typename std::enable_if<std::is_integral<U>::value>::type*)
-    : type_(value::integer), i_(v)
-  {}
-
+  constexpr inline basic_val<T>::basic_val(U v, typename std::enable_if<std::is_integral<U>::value>::type*) noexcept
+    : type_(value::integer), i_(v) {}
 
   template<typename T>
   template<typename U>
-  constexpr inline basic_val<T>::basic_val(U v, typename std::enable_if<std::is_floating_point<U>::value>::type*)
-    : type_(value::real), r_(v)
-  {}
-
+  constexpr inline basic_val<T>::basic_val(U v, typename std::enable_if<std::is_floating_point<U>::value>::type*) noexcept
+    : type_(value::real), r_(v) {}
 
   template<typename T>
   inline basic_val<T>& basic_val<T>::operator=(self_t const& v)
@@ -152,7 +111,7 @@ namespace jsxx
   }
 
   template<typename T>
-  inline basic_val<T>& basic_val<T>::operator=(self_t&& v)
+  inline basic_val<T>& basic_val<T>::operator=(self_t&& v) noexcept
   {
     move(std::move(v));
     return *this;
@@ -187,19 +146,13 @@ namespace jsxx
     return *this;
   }
 
+  template<typename T>
+  inline basic_val<T>::~basic_val() noexcept
+  { free(); }
 
   template<typename T>
-  inline basic_val<T>::~basic_val()
-  {
-    free();
-  }
-
-  template<typename T>
-  inline value basic_val<T>::type() const
-  {
-    return type_;
-  }
-
+  inline value basic_val<T>::type() const noexcept
+  { return type_; }
 
   // accessor
   template<typename T>
@@ -250,7 +203,6 @@ namespace jsxx
     throw range_error(s);
   }
 
-
   template<typename T>
   template<std::size_t N>
   inline basic_val<T>& basic_val<T>::operator[](char_t const(&s)[N])
@@ -264,7 +216,6 @@ namespace jsxx
   {
     return this->operator[](string_t(s));
   }
-
 
   // cast operators
   template<typename T>
@@ -283,11 +234,10 @@ namespace jsxx
   }
 
   template<typename T>
-  inline basic_val<T>::operator bool() const
+  inline basic_val<T>::operator bool() const noexcept
   {
     return as_boolean(*this);
   }
-
 
   // iterator
   template<typename T>
@@ -306,7 +256,6 @@ namespace jsxx
     return std::end(a_);
   }
 
-
   template<typename T>
   inline typename basic_val<T>::const_iterator basic_val<T>::begin() const
   {
@@ -323,10 +272,9 @@ namespace jsxx
     return std::end(a_);
   }
 
-
   // comparison ops
   template<typename T>
-  inline bool basic_val<T>::operator==(self_t const& v) const
+  inline bool basic_val<T>::operator==(self_t const& v) const noexcept
   {
     if (type_ != v.type_) {
       if ((type_ == value::integer || type_ == value::real) &&
@@ -351,18 +299,15 @@ namespace jsxx
   }
 
   template<typename T>
-  inline bool basic_val<T>::operator!=(self_t const& v) const
+  inline bool basic_val<T>::operator!=(self_t const& v) const noexcept
   {
     return !(*this == v);
   }
 
-
   // key/value pair
   template<typename T>
-  constexpr inline basic_val<T>::k::k(char_t const* s)
-    : key(s)
-  {}
-
+  constexpr inline basic_val<T>::k::k(char_t const* s) noexcept
+    : key(s) {}
 
   template<typename T>
   constexpr inline typename basic_val<T>::pair_t
@@ -370,7 +315,6 @@ namespace jsxx
   {
     return pair_t(key, list);
   }
-
 
   template<typename T>
   template<typename U>
@@ -382,7 +326,6 @@ namespace jsxx
     return pair_t(key, std::forward<U>(t));
   }
 
-
   template<typename T>
   constexpr inline typename basic_val<T>::pair_t
   basic_val<T>::k::operator=(std::initializer_list<pair_t> list) const
@@ -390,10 +333,9 @@ namespace jsxx
     return pair_t(key, list);
   }
 
-
   // private:
   template<typename T>
-  inline void basic_val<T>::free()
+  inline void basic_val<T>::free() noexcept
   {
     switch (type_) {
       default: break;
@@ -432,7 +374,7 @@ namespace jsxx
   }
 
   template<typename T>
-  inline void basic_val<T>::move(self_t&& v)
+  inline void basic_val<T>::move(self_t&& v) noexcept
   {
     if (type_ == v.type_) {
       switch (type_) {

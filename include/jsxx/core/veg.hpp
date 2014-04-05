@@ -8,18 +8,18 @@ namespace jsxx
     template<typename Ctx>
     struct guard
     {
-      guard(Ctx& c)
+      guard(Ctx& c) noexcept
         : cx(c)
         , it(c.pos())
         , dismissed(false)
       { }
 
-      ~guard() {
+      ~guard() noexcept {
         if (!dismissed)
           cx.pos(it);
       }
 
-      bool dismiss() {
+      bool dismiss() noexcept {
         return dismissed = true; // yes
       }
 
@@ -37,7 +37,7 @@ namespace jsxx
     struct alter<T>
     {
       template<typename Ctx>
-      static bool match(Ctx& c) {
+      static bool match(Ctx& c) noexcept {
         return T::match(c);
       }
     };
@@ -48,7 +48,7 @@ namespace jsxx
       typedef alter<Args...> rest;
 
       template<typename Ctx>
-      static bool match(Ctx& c) {
+      static bool match(Ctx& c) noexcept {
         return T::match(c) || rest::match(c);
       }
     };
@@ -62,7 +62,7 @@ namespace jsxx
     struct seq<T>
     {
       template<typename Ctx>
-      static bool match(Ctx& c) {
+      static bool match(Ctx& c) noexcept {
         return T::match(c);
       }
     };
@@ -73,7 +73,7 @@ namespace jsxx
       typedef seq<Args...> rest;
 
       template<typename Ctx>
-      static bool match(Ctx& c) {
+      static bool match(Ctx& c) noexcept {
         guard<Ctx> g(c);
         if (T::match(c) && rest::match(c)) {
           return g.dismiss();
@@ -88,7 +88,7 @@ namespace jsxx
     struct star
     {
       template<typename Ctx>
-      static bool match(Ctx& c) {
+      static bool match(Ctx& c) noexcept {
         if (!c.eoi()) {
           while (T::match(c));
         }
@@ -105,7 +105,7 @@ namespace jsxx
     struct ch<Char, C>
     {
       template<typename Ctx>
-      static bool match(Ctx& c) {
+      static bool match(Ctx& c) noexcept {
         if (!c.eoi() && *c == C) {
           ++c;
           return true;
@@ -118,7 +118,7 @@ namespace jsxx
     struct ch<Char, C, Args...>
     {
       template<typename Ctx>
-      static bool match(Ctx& c) {
+      static bool match(Ctx& c) noexcept {
         return seq<ch<Char,C>, ch<Char,Args...>>::match(c);
       }
 
@@ -130,7 +130,7 @@ namespace jsxx
     struct not_ch
     {
       template<typename Ctx>
-      static bool match(Ctx& c) {
+      static bool match(Ctx& c) noexcept {
         if (!c.eoi() && *c != C) {
           ++c;
           return true;
@@ -148,7 +148,7 @@ namespace jsxx
     struct set<Char, C>
     {
       template<typename Ctx>
-      static bool match(Ctx& c) {
+      static bool match(Ctx& c) noexcept {
         return ch<Char,C>::match(c);
       }
     };
@@ -158,7 +158,7 @@ namespace jsxx
     struct set<Char, C, Args...>
     {
       template<typename Ctx>
-      static bool match(Ctx& c) {
+      static bool match(Ctx& c) noexcept {
         return ch<Char,C>::match(c) || set<Char,Args...>::match(c);
       }
 
@@ -170,7 +170,7 @@ namespace jsxx
     struct opt
     {
       template<typename Ctx>
-      static bool match(Ctx& c) {
+      static bool match(Ctx& c) noexcept {
         if (!c.eoi()) {
           T::match(c);
         }
@@ -184,7 +184,7 @@ namespace jsxx
     struct store
     {
       template<typename Ctx>
-      static bool match(Ctx& c) {
+      static bool match(Ctx& c) noexcept {
         c.template push<Type>(c.pos());
         if (T::match(c)) {
           c.close(c.pos());
@@ -201,7 +201,7 @@ namespace jsxx
     struct storex // always store
     {
       template<typename Ctx>
-      static bool match(Ctx& c) {
+      static bool match(Ctx& c) noexcept {
         c.template push_close<Type>(c.pos());
         return true;
       }
@@ -212,7 +212,7 @@ namespace jsxx
     struct eoi
     {
       template<typename Ctx>
-      static bool match(Ctx& c) {
+      static bool match(Ctx& c) noexcept {
         return c.eoi();
       }
     };
@@ -223,7 +223,7 @@ namespace jsxx
     struct jnum
     {
       template<typename Ctx>
-      static bool match(Ctx& c) {
+      static bool match(Ctx& c) noexcept {
         if (c.eoi())
           return false;
         auto const a = *c;
@@ -310,7 +310,7 @@ namespace jsxx
     struct tok
     {
       template<typename Ctx>
-      static bool match(Ctx& c) {
+      static bool match(Ctx& c) noexcept {
         if (T::match(c)) {
           while (!c.eoi() && (*c == ' ' || *c == '\n' || *c == '\r' || *c == '\t'))
             ++c;
@@ -324,7 +324,7 @@ namespace jsxx
     struct ch_tok
     {
       template<typename Ctx>
-      static bool match(Ctx& c) {
+      static bool match(Ctx& c) noexcept {
         if (!c.eoi() && *c == C) {
           ++c;
           while (!c.eoi() && (*c == ' ' || *c == '\n' || *c == '\r' || *c == '\t'))

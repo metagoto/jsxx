@@ -25,15 +25,15 @@ namespace jsxx
     using iterator = typename array_t::iterator;
     using const_iterator = typename array_t::const_iterator;
 
-    constexpr basic_val();
+    constexpr basic_val() noexcept;
 
     basic_val(self_t const&);
-    basic_val(self_t&&);
+    basic_val(self_t&&) noexcept;
 
-    constexpr basic_val(std::nullptr_t);
-    constexpr basic_val(bool_t);
-    constexpr basic_val(int_t);
-    constexpr basic_val(real_t);
+    constexpr basic_val(std::nullptr_t) noexcept;
+    constexpr basic_val(bool_t) noexcept;
+    constexpr basic_val(int_t) noexcept;
+    constexpr basic_val(real_t) noexcept;
     constexpr basic_val(string_t const&);
     constexpr basic_val(char_t const*);
     constexpr basic_val(array_t const&);
@@ -44,27 +44,27 @@ namespace jsxx
     constexpr basic_val(empty::array_t, std::size_t const&);
     constexpr basic_val(empty::object_t, std::size_t const&);
 
-    constexpr basic_val(string_t&&);
-    constexpr basic_val(array_t&&);
-    constexpr basic_val(object_t&&);
+    constexpr basic_val(string_t&&) noexcept;
+    constexpr basic_val(array_t&&) noexcept;
+    constexpr basic_val(object_t&&) noexcept;
 
     constexpr basic_val(std::initializer_list<pair_t>);
     constexpr basic_val(std::initializer_list<self_t>);
 
     template<typename T>
-    constexpr basic_val(T, typename std::enable_if<std::is_integral<T>::value>::type* = 0);
+    constexpr basic_val(T, typename std::enable_if<std::is_integral<T>::value>::type* = 0) noexcept;
     template<typename T>
-    constexpr basic_val(T, typename std::enable_if<std::is_floating_point<T>::value>::type* = 0);
+    constexpr basic_val(T, typename std::enable_if<std::is_floating_point<T>::value>::type* = 0) noexcept;
 
-    ~basic_val();
+    ~basic_val() noexcept;
 
     basic_val& operator=(self_t const&);
-    basic_val& operator=(self_t&&);
+    basic_val& operator=(self_t&&) noexcept;
     basic_val& operator=(std::initializer_list<self_t>);
     basic_val& operator=(empty::array_t);
     basic_val& operator=(empty::object_t);
 
-    value type() const;
+    value type() const noexcept;
 
     self_t& operator[](std::size_t);
     self_t const& operator[](std::size_t) const;
@@ -80,7 +80,7 @@ namespace jsxx
     template<typename T>
     operator T() const;
     operator char_t const*() const;
-    operator bool() const;
+    operator bool() const noexcept;
 
     iterator begin();
     iterator end();
@@ -88,13 +88,13 @@ namespace jsxx
     const_iterator end() const;
     // TOTO: cbegin...., rbegin etc..
 
-    bool operator==(self_t const&) const;
-    bool operator!=(self_t const&) const;
+    bool operator==(self_t const&) const noexcept;
+    bool operator!=(self_t const&) const noexcept;
     //TODO: < <= ...
 
     struct k
     {
-      constexpr explicit k(char_t const*);
+      constexpr explicit k(char_t const*) noexcept;
 
       constexpr pair_t operator=(std::initializer_list<self_t>) const;
 
@@ -120,9 +120,9 @@ namespace jsxx
       object_t o_;
     };
 
-    void free();
+    void free() noexcept;
     void copy(self_t const& v);
-    void move(self_t&& v);
+    void move(self_t&& v) noexcept;
 
     template<class, class, class> friend struct internal::access;
   };

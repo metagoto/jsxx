@@ -20,7 +20,7 @@ namespace jsxx
       return n / 10;
     }
 
-    inline double pow10(std::size_t i) {
+    inline double pow10(std::size_t i) noexcept {
       static constexpr double const t[309] = { 0.0,
         1.0E+001, 1.0E+002, 1.0E+003, 1.0E+004, 1.0E+005, 1.0E+006, 1.0E+007, 1.0E+008, 1.0E+009, 1.0E+010,
         1.0E+011, 1.0E+012, 1.0E+013, 1.0E+014, 1.0E+015, 1.0E+016, 1.0E+017, 1.0E+018, 1.0E+019, 1.0E+020,
@@ -60,7 +60,7 @@ namespace jsxx
     }
 
     template<typename T>
-    inline int hex(T c) {
+    inline int hex(T c) noexcept {
       #define JSXX_Z16 -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1
       static constexpr int const t[256] = {
         JSXX_Z16,JSXX_Z16,JSXX_Z16,
@@ -76,7 +76,7 @@ namespace jsxx
     }
 
     template<typename T>
-    inline unsigned int esc(T c) {
+    inline unsigned int esc(T c) noexcept {
       #define JSXX_Z16 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
       static constexpr char const t[256] = {
         JSXX_Z16,JSXX_Z16,0,0,'\"',0,0,0,0,0,0,0,0,0,0,0,0,'/',
@@ -94,7 +94,7 @@ namespace jsxx
 
   // this routine assumes a valid JSON integer encoded in str[it,end)
   template <typename T, typename It>
-  inline int string_to_integer(It it, It const end, T& result)
+  inline int string_to_integer(It it, It const end, T& result) noexcept
   {
     T t = 0;
     bool negative = false;
@@ -143,7 +143,7 @@ namespace jsxx
 
   // this routine assumes a valid JSON real number encoded in str[it,end)
   template <typename T, typename It>
-  inline int string_to_real(It it, It const end, T& result)
+  inline int string_to_real(It it, It const end, T& result) noexcept
   {
     T t = 0;
     bool negative = false;

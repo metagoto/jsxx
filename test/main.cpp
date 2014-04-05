@@ -9,6 +9,14 @@
 
 using namespace jsxx;
 
+
+static_assert(std::is_nothrow_move_constructible<val>::value,"");
+
+
+
+
+
+
 lest::test const specs[] =
 {
   {"constructor", [] {
