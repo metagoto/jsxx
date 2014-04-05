@@ -30,7 +30,7 @@ namespace jsxx
     basic_val(self_t const&);
     basic_val(self_t&&) noexcept;
 
-    constexpr basic_val(std::nullptr_t) noexcept;
+    constexpr basic_val(null_t) noexcept;
     constexpr basic_val(bool_t) noexcept;
     constexpr basic_val(int_t) noexcept;
     constexpr basic_val(real_t) noexcept;

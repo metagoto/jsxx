@@ -6,47 +6,51 @@
 
 namespace jsxx
 {
-
+  //TODO: wtf
   template<typename T, typename Tag>
-  inline typename std::enable_if<!std::is_same<T,char const*>::value, bool>::type
+  inline typename std::enable_if<!std::is_same<T, typename basic_val<Tag>::char_t const*>::value
+    && !std::is_same<T, typename basic_val<Tag>::null_t>::value, bool>::type
   operator==(basic_val<Tag> const& v, T const& a) noexcept {
     if (auto p = get<T>(&v)) return *p == a;
     return false;
   }
   template<typename T, typename Tag>
-  inline typename std::enable_if<!std::is_same<T,char const*>::value, bool>::type
+  inline typename std::enable_if<!std::is_same<T, typename basic_val<Tag>::char_t const*>::value
+    && !std::is_same<T, typename basic_val<Tag>::null_t>::value, bool>::type
   operator==(T const& a, basic_val<Tag> const& v) noexcept {
     return v == a;
   }
 
   template<typename T, typename Tag>
-  inline typename std::enable_if<!std::is_same<T,char const*>::value, bool>::type
+  inline typename std::enable_if<!std::is_same<T, typename basic_val<Tag>::char_t const*>::value
+    && !std::is_same<T, typename basic_val<Tag>::null_t>::value, bool>::type
   operator!=(basic_val<Tag> const& v, T const& a) noexcept {
     if (auto p = get<T>(&v)) return *p != a;
     return true;
   }
   template<typename T, typename Tag>
-  inline typename std::enable_if<!std::is_same<T,char const*>::value, bool>::type
+  inline typename std::enable_if<!std::is_same<T, typename basic_val<Tag>::char_t const*>::value
+    && !std::is_same<T, typename basic_val<Tag>::null_t>::value, bool>::type
   operator!=(T const& a, basic_val<Tag> const& v) noexcept {
     return v != a;
   }
 
-  // overloads for nullptr
+  // overloads for null_t
   template<typename T>
-  inline bool operator==(std::nullptr_t, basic_val<T> const& v) noexcept {
+  inline bool operator==(typename basic_val<T>::null_t, basic_val<T> const& v) noexcept {
     return is_null(v);
   }
   template<typename T>
-  inline bool operator==(basic_val<T> const& v, std::nullptr_t) noexcept {
+  inline bool operator==(basic_val<T> const& v, typename basic_val<T>::null_t) noexcept {
     return is_null(v);
   }
 
   template<typename T>
-  inline bool operator!=(std::nullptr_t, basic_val<T> const& v) noexcept {
+  inline bool operator!=(typename basic_val<T>::null_t, basic_val<T> const& v) noexcept {
     return !is_null(v);
   }
   template<typename T>
-  inline bool operator!=(basic_val<T> const& v, std::nullptr_t) noexcept {
+  inline bool operator!=(basic_val<T> const& v, typename basic_val<T>::null_t) noexcept {
     return !is_null(v);
   }
 

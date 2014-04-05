@@ -25,7 +25,7 @@ namespace jsxx
   { move(std::move(v)); }
 
   template<typename T>
-  constexpr inline basic_val<T>::basic_val(std::nullptr_t) noexcept
+  constexpr inline basic_val<T>::basic_val(null_t) noexcept
     : type_(json::null) {}
 
   template<typename T>
