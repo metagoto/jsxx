@@ -8,11 +8,11 @@ namespace jsxx
 
   template<typename T>
   inline bool is_null(basic_val<T> const& v) noexcept
-  { return v.type() == value::null; }
+  { return v.type() == json::null; }
 
   template<typename T>
   inline bool is_boolean(basic_val<T> const& v) noexcept
-  { return v.type() == value::boolean; }
+  { return v.type() == json::boolean; }
 
   template<typename T>
   inline bool is_bool(basic_val<T> const& v) noexcept
@@ -20,7 +20,7 @@ namespace jsxx
 
   template<typename T>
   inline bool is_integer(basic_val<T> const& v) noexcept
-  { return v.type() == value::integer; }
+  { return v.type() == json::integer; }
 
   template<typename T>
   inline bool is_int(basic_val<T> const& v) noexcept
@@ -28,7 +28,7 @@ namespace jsxx
 
   template<typename T>
   inline bool is_real(basic_val<T> const& v) noexcept
-  { return v.type() == value::real; }
+  { return v.type() == json::real; }
 
   template<typename T>
   inline bool is_double(basic_val<T> const& v) noexcept
@@ -36,15 +36,15 @@ namespace jsxx
 
   template<typename T>
   inline bool is_string(basic_val<T> const& v) noexcept
-  { return v.type() == value::string; }
+  { return v.type() == json::string; }
 
   template<typename T>
   inline bool is_array(basic_val<T> const& v) noexcept
-  { return v.type() == value::array; }
+  { return v.type() == json::array; }
 
   template<typename T>
   inline bool is_object(basic_val<T> const& v) noexcept
-  { return v.type() == value::object; }
+  { return v.type() == json::object; }
 
   template<typename T>
   inline bool is_number(basic_val<T> const& v) noexcept
@@ -63,7 +63,7 @@ namespace jsxx
     template<typename T>
     struct access<T, get_tag, typename T::bool_t> {
       static cqual<T, typename T::bool_t>* get(T& v) noexcept {
-        if (v.type() == value::boolean)
+        if (v.type() == json::boolean)
           return &v.b_;
         return nullptr;
       }
@@ -71,7 +71,7 @@ namespace jsxx
     template<typename T>
     struct access<T, get_tag, typename T::int_t> {
       static cqual<T, typename T::int_t>* get(T& v) noexcept {
-        if (v.type() == value::integer)
+        if (v.type() == json::integer)
           return &v.i_;
         return nullptr;
       }
@@ -79,7 +79,7 @@ namespace jsxx
     template<typename T>
     struct access<T, get_tag, typename T::real_t> {
       static cqual<T, typename T::real_t>* get(T& v) noexcept {
-        if (v.type() == value::real)
+        if (v.type() == json::real)
           return &v.r_;
         return nullptr;
       }
@@ -87,7 +87,7 @@ namespace jsxx
     template<typename T>
     struct access<T, get_tag, typename T::string_t> {
       static cqual<T, typename T::string_t>* get(T& v) noexcept {
-        if (v.type() == value::string)
+        if (v.type() == json::string)
           return &v.s_;
         return nullptr;
       }
@@ -95,7 +95,7 @@ namespace jsxx
     template<typename T>
     struct access<T, get_tag, typename T::array_t> {
       static cqual<T, typename T::array_t>* get(T& v) noexcept {
-        if (v.type() == value::array)
+        if (v.type() == json::array)
           return &v.a_;
         return nullptr;
       }
@@ -103,7 +103,7 @@ namespace jsxx
     template<typename T>
     struct access<T, get_tag, typename T::object_t> {
       static cqual<T, typename T::object_t>* get(T& v) noexcept {
-        if (v.type() == value::object)
+        if (v.type() == json::object)
           return &v.o_;
         return nullptr;
       }
@@ -369,13 +369,13 @@ namespace jsxx
 
 
     template<typename T>
-    inline void ensure(basic_val<T> const& v, value type) {
+    inline void ensure(basic_val<T> const& v, json type) {
       if (v.type() != type)
         throw type_error("wrong value type");
     }
 
     template<typename T>
-    inline void ensure_any(basic_val<T> const& v, value type1, value type2) {
+    inline void ensure_any(basic_val<T> const& v, json type1, json type2) {
       if (v.type() != type1 && v.type() != type2)
         throw type_error("wrong value type");
     }
@@ -391,7 +391,7 @@ namespace jsxx
     struct access<T, container_tag>
     {
       static bool in(T const& v, std::size_t index) {
-        ensure(v, value::array);
+        ensure(v, json::array);
         return index < v.a_.size();
       }
 
@@ -400,7 +400,7 @@ namespace jsxx
       }
 
       static bool del(T& v, std::size_t index) {
-        ensure(v, value::array);
+        ensure(v, json::array);
         if (index < v.a_.size()) {
           v.a_.erase(std::begin(v.a_)+index);
           return true;
@@ -419,7 +419,7 @@ namespace jsxx
 
       template<typename U>
       static auto find(U&& v, typename T::char_t const* key) -> decltype(v.o_.end()) {
-        ensure(v, value::object);
+        ensure(v, json::object);
         return std::find_if(v.o_.begin(), v.o_.end(), [&key](typename T::pair_t const& p){
           return p.first == key;
         });
@@ -448,7 +448,7 @@ namespace jsxx
   // array or object
   template<typename T>
   inline bool in(basic_val<T> const& v, basic_val<T> const& key_or_index) {
-    internal::ensure_any(v, value::object, value::array);
+    internal::ensure_any(v, json::object, json::array);
     if (is_object(v)) {
       if (is_string(key_or_index))
         return in(v, get<typename basic_val<T>::string_t>(key_or_index).c_str());
@@ -481,7 +481,7 @@ namespace jsxx
   // array or object
   template<typename T>
   inline bool del(basic_val<T>& v, basic_val<T> const& key_or_index) {
-    internal::ensure_any(v, value::object, value::array);
+    internal::ensure_any(v, json::object, json::array);
     if (is_object(v)) {
       if (is_string(key_or_index))
         return del(v, get<typename basic_val<T>::string_t>(key_or_index).c_str());
@@ -511,7 +511,7 @@ namespace jsxx
 //      static auto get(U& v)
 //        -> typename std::enable_if<std::is_integral<V>::value, cqual<U, V>>::type
 //      {
-//        if (v.type() == value::integer)
+//        if (v.type() == json::integer)
 //          return reinterpret_cast<cqual<U,V>>(&v.i_);
 //        return nullptr;
 //      }
@@ -520,7 +520,7 @@ namespace jsxx
 //      static auto get(U& v)
 //        -> typename std::enable_if<std::is_floating_point<V>::value, cqual<U,V>>::type
 //      {
-//        if (v.type() == value::real)
+//        if (v.type() == json::real)
 //          return reinterpret_cast<cqual<U,V>>(&v.r_);
 //        return nullptr;
 //      }
@@ -532,7 +532,7 @@ namespace jsxx
 //    {
 //      static cqual<T, typename T::null_t> get(T& v) {
 //        static constexpr std::nullptr_t const n = nullptr;
-//        if (v.type() == value::null)
+//        if (v.type() == json::null)
 //          return &n;
 //        return nullptr;
 //      }

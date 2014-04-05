@@ -571,7 +571,7 @@ lest::test const specs[] =
 //    }
 
 //    auto i = values_.begin();
-//    cout << (i->type() == value::null ? "NULL" : "ERR") << endl;
+//    cout << (i->type() == json::null ? "NULL" : "ERR") << endl;
 
     //
 //    auto xs = items(a);

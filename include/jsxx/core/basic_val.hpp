@@ -64,7 +64,7 @@ namespace jsxx
     basic_val& operator=(empty::array_t) &;
     basic_val& operator=(empty::object_t) &;
 
-    value type() const noexcept;
+    json type() const noexcept;
 
     self_t& operator[](std::size_t);
     self_t const& operator[](std::size_t) const;
@@ -109,7 +109,7 @@ namespace jsxx
     };
 
   private:
-    value type_;
+    json type_;
 
     union {
       bool_t b_;

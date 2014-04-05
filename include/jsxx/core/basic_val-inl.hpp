@@ -12,95 +12,95 @@ namespace jsxx
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val() noexcept
-    : type_(value::null) {}
+    : type_(json::null) {}
 
   template<typename T>
   inline basic_val<T>::basic_val(self_t const& v)
-    : type_(value::null)
+    : type_(json::null)
   { copy(v); }
 
   template<typename T>
   inline basic_val<T>::basic_val(self_t&& v) noexcept
-    : type_(value::null)
+    : type_(json::null)
   { move(std::move(v)); }
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(std::nullptr_t) noexcept
-    : type_(value::null) {}
+    : type_(json::null) {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(bool_t v) noexcept
-    : type_(value::boolean), b_(v) {}
+    : type_(json::boolean), b_(v) {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(int_t v) noexcept
-    : type_(value::integer), i_(v) {}
+    : type_(json::integer), i_(v) {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(real_t v) noexcept
-    : type_(value::real), r_(v) {}
+    : type_(json::real), r_(v) {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(string_t const& v)
-    : type_(value::string), s_(v) {}
+    : type_(json::string), s_(v) {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(char_t const* v)
-    : type_(value::string), s_(v) {}
+    : type_(json::string), s_(v) {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(array_t const& v)
-    : type_(value::array), a_(v) {}
+    : type_(json::array), a_(v) {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(object_t const& v)
-    : type_(value::object), o_(v) {}
+    : type_(json::object), o_(v) {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(empty::array_t)
-    : type_(value::array), a_() {}
+    : type_(json::array), a_() {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(empty::object_t)
-    : type_(value::object), o_() {}
+    : type_(json::object), o_() {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(empty::array_t, std::size_t const& v)
-    : type_(value::array), a_(v) {}
+    : type_(json::array), a_(v) {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(empty::object_t, std::size_t const& v)
-    : type_(value::object), o_(v) {}
+    : type_(json::object), o_(v) {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(string_t&& v) noexcept
-    : type_(value::string), s_(std::move(v)) {}
+    : type_(json::string), s_(std::move(v)) {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(array_t&& v) noexcept
-    : type_(value::array), a_(std::move(v)) {}
+    : type_(json::array), a_(std::move(v)) {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(object_t&& v) noexcept
-    : type_(value::object), o_(std::move(v)) {}
+    : type_(json::object), o_(std::move(v)) {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(std::initializer_list<pair_t> l)
-    : type_(value::object), o_(std::begin(l), std::end(l)) {}
+    : type_(json::object), o_(std::begin(l), std::end(l)) {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(std::initializer_list<self_t> l)
-    : type_(value::array), a_(std::begin(l), std::end(l)) {}
+    : type_(json::array), a_(std::begin(l), std::end(l)) {}
 
   template<typename T>
   template<typename U>
   constexpr inline basic_val<T>::basic_val(U v, typename std::enable_if<std::is_integral<U>::value>::type*) noexcept
-    : type_(value::integer), i_(v) {}
+    : type_(json::integer), i_(v) {}
 
   template<typename T>
   template<typename U>
   constexpr inline basic_val<T>::basic_val(U v, typename std::enable_if<std::is_floating_point<U>::value>::type*) noexcept
-    : type_(value::real), r_(v) {}
+    : type_(json::real), r_(v) {}
 
   template<typename T>
   inline basic_val<T>& basic_val<T>::operator=(self_t const& v) &
@@ -122,7 +122,7 @@ namespace jsxx
   {
     free();
     if (l.size()) {
-      type_ = value::array;
+      type_ = json::array;
       new (&a_) array_t(std::begin(l), std::end(l));
     }
     return *this;
@@ -132,7 +132,7 @@ namespace jsxx
   inline basic_val<T>& basic_val<T>::operator=(empty::array_t) &
   {
     free();
-    type_ = value::array;
+    type_ = json::array;
     new (&a_) array_t{};
     return *this;
   }
@@ -141,7 +141,7 @@ namespace jsxx
   inline basic_val<T>& basic_val<T>::operator=(empty::object_t) &
   {
     free();
-    type_ = value::object;
+    type_ = json::object;
     new (&o_) object_t{};
     return *this;
   }
@@ -151,7 +151,7 @@ namespace jsxx
   { free(); }
 
   template<typename T>
-  inline value basic_val<T>::type() const noexcept
+  inline json basic_val<T>::type() const noexcept
   { return type_; }
 
   // accessor
@@ -277,23 +277,23 @@ namespace jsxx
   inline bool basic_val<T>::operator==(self_t const& v) const noexcept
   {
     if (type_ != v.type_) {
-      if ((type_ == value::integer || type_ == value::real) &&
-          (v.type_ == value::integer || v.type_ == value::real)) {
-        auto const& i = type_ == value::integer ? *this : v;
-        auto const& r = type_ == value::integer ? v : *this;
+      if ((type_ == json::integer || type_ == json::real) &&
+          (v.type_ == json::integer || v.type_ == json::real)) {
+        auto const& i = type_ == json::integer ? *this : v;
+        auto const& r = type_ == json::integer ? v : *this;
         return i.i_ == r.r_;
       }
       return false;
     }
     switch (type_) {
       default: break;
-      case value::null: return true;
-      case value::boolean: return b_ == v.b_;
-      case value::integer: return i_ == v.i_;
-      case value::real: return r_ == v.r_;
-      case value::string: return s_ == v.s_;
-      case value::array: return a_ == v.a_;
-      case value::object: return o_ == v.o_;
+      case json::null: return true;
+      case json::boolean: return b_ == v.b_;
+      case json::integer: return i_ == v.i_;
+      case json::real: return r_ == v.r_;
+      case json::string: return s_ == v.s_;
+      case json::array: return a_ == v.a_;
+      case json::object: return o_ == v.o_;
     }
     return false;
   }
@@ -339,11 +339,11 @@ namespace jsxx
   {
     switch (type_) {
       default: break;
-      case value::string: s_.~string_t(); break;
-      case value::array: a_.~array_t(); break;
-      case value::object: o_.~object_t(); break;
+      case json::string: s_.~string_t(); break;
+      case json::array: a_.~array_t(); break;
+      case json::object: o_.~object_t(); break;
     }
-    type_ = value::null;
+    type_ = json::null;
   }
 
   template<typename T>
@@ -352,24 +352,24 @@ namespace jsxx
     if (type_ == v.type_) {
       switch (type_) {
         default: break;
-        case value::boolean: b_ = v.b_; break;
-        case value::integer: i_ = v.i_; break;
-        case value::real: r_ = v.r_; break;
-        case value::string: s_ = v.s_; break;
-        case value::array: a_ = v.a_; break;
-        case value::object: o_ = v.o_; break;
+        case json::boolean: b_ = v.b_; break;
+        case json::integer: i_ = v.i_; break;
+        case json::real: r_ = v.r_; break;
+        case json::string: s_ = v.s_; break;
+        case json::array: a_ = v.a_; break;
+        case json::object: o_ = v.o_; break;
       }
       return;
     }
     free();
     switch (type_ = v.type_) {
       default: break;
-      case value::boolean: b_ = v.b_; break;
-      case value::integer: i_ = v.i_; break;
-      case value::real: r_ = v.r_; break;
-      case value::string: new (&s_) string_t(v.s_); break;
-      case value::array: new (&a_) array_t(v.a_); break;
-      case value::object: new (&o_) object_t(v.o_); break;
+      case json::boolean: b_ = v.b_; break;
+      case json::integer: i_ = v.i_; break;
+      case json::real: r_ = v.r_; break;
+      case json::string: new (&s_) string_t(v.s_); break;
+      case json::array: new (&a_) array_t(v.a_); break;
+      case json::object: new (&o_) object_t(v.o_); break;
     }
   }
 
@@ -379,24 +379,24 @@ namespace jsxx
     if (type_ == v.type_) {
       switch (type_) {
         default: break;
-        case value::boolean: b_ = std::move(v.b_); break;
-        case value::integer: i_ = std::move(v.i_); break;
-        case value::real: r_ = std::move(v.r_); break;
-        case value::string: s_ = std::move(v.s_); break;
-        case value::array: a_ = std::move(v.a_); break;
-        case value::object: o_ = std::move(v.o_); break;
+        case json::boolean: b_ = std::move(v.b_); break;
+        case json::integer: i_ = std::move(v.i_); break;
+        case json::real: r_ = std::move(v.r_); break;
+        case json::string: s_ = std::move(v.s_); break;
+        case json::array: a_ = std::move(v.a_); break;
+        case json::object: o_ = std::move(v.o_); break;
       }
       return;
     }
     free();
     switch (type_ = v.type_) {
       default: break;
-      case value::boolean: b_ = std::move(v.b_); break;
-      case value::integer: i_ = std::move(v.i_); break;
-      case value::real: r_ = std::move(v.r_); break;
-      case value::string: new (&s_) string_t(std::move(v.s_)); break;
-      case value::array: new (&a_) array_t(std::move(v.a_)); break;
-      case value::object: new (&o_) object_t(std::move(v.o_)); break;
+      case json::boolean: b_ = std::move(v.b_); break;
+      case json::integer: i_ = std::move(v.i_); break;
+      case json::real: r_ = std::move(v.r_); break;
+      case json::string: new (&s_) string_t(std::move(v.s_)); break;
+      case json::array: new (&a_) array_t(std::move(v.a_)); break;
+      case json::object: new (&o_) object_t(std::move(v.o_)); break;
     }
   }
 

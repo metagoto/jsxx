@@ -13,17 +13,17 @@ namespace jsxx
   inline std::ostream& print(std::ostream& o, basic_val<Tag> const& v)
   {
     switch (v.type()) {
-      case value::null:
+      case json::null:
         o << "null"; break;
-      case value::boolean:
+      case json::boolean:
         o << (get<typename basic_val<Tag>::bool_t>(v) ? "true" : "false"); break;
-      case value::integer:
+      case json::integer:
         o << get<typename basic_val<Tag>::int_t>(v); break;
-      case value::real:
+      case json::real:
         o << get<typename basic_val<Tag>::real_t>(v); break;
-      case value::string:
+      case json::string:
         o << "\"" << get<typename basic_val<Tag>::string_t>(v) << "\""; break;
-      case value::array: {
+      case json::array: {
         o << "[";
         bool first = true;
         for (auto const& a : v) {
@@ -34,7 +34,7 @@ namespace jsxx
         o << "]";
         break;
       }
-      case value::object: {
+      case json::object: {
         o << "{";
         bool first = true;
         for (auto const& a : items(v)) {

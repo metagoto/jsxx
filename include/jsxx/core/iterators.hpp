@@ -115,17 +115,17 @@ namespace jsxx
     struct access<T, iterator_tag>
     {
       static iterator_proxy<T, const_items> items(T const& v) {
-        ensure(v, value::object);
+        ensure(v, json::object);
         return iterator_proxy<T, const_items>(v.o_);
       }
 
       static iterator_proxy<T, const_values> values(T const& v) {
-        ensure(v, value::object);
+        ensure(v, json::object);
         return iterator_proxy<T, const_values>(v.o_);
       }
 
       static iterator_proxy<T, const_keys> keys(T const& v) {
-        ensure(v, value::object);
+        ensure(v, json::object);
         return iterator_proxy<T, const_keys>(v.o_);
       }
     };
