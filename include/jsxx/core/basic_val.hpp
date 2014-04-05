@@ -58,11 +58,11 @@ namespace jsxx
 
     ~basic_val() noexcept;
 
-    basic_val& operator=(self_t const&) &;
-    basic_val& operator=(self_t&&) & noexcept;
-    basic_val& operator=(std::initializer_list<self_t>) &;
-    basic_val& operator=(empty::array_t) &;
-    basic_val& operator=(empty::object_t) &;
+    self_t& operator=(self_t const&) &;
+    self_t& operator=(self_t&&) & noexcept;
+    self_t& operator=(std::initializer_list<self_t>) &;
+    self_t& operator=(empty::array_t) &;
+    self_t& operator=(empty::object_t) &;
 
     json type() const noexcept;
 
