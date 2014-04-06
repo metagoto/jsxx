@@ -576,21 +576,29 @@ lest::test const specs[] =
       EXPECT(i == 0);
       i = v;
       EXPECT(i == 1);
+      auto i2 = as<int>(v);
+      EXPECT(i == i2);
 
       double d = u;
       EXPECT(d == 0.0);
       d = v;
       EXPECT(d == 1.0);
+      auto d2 = as<double>(v);
+      EXPECT(d == d2);
 
       bool b = u;
       EXPECT(b == false);
       b = v;
       EXPECT(b == true);
+      auto b2 = as<bool>(v);
+      EXPECT(b == b2);
 
       float f = u;
       EXPECT(f == 0.f);
       f = v;
       EXPECT(f == 1.0f);
+      auto f2 = as<float>(v);
+      EXPECT(f == f2);
     }
     {
       val u = 0.0;
@@ -653,6 +661,8 @@ lest::test const specs[] =
       EXPECT(b == true);
       val::string_t s = (val::string_t)v;
       EXPECT(s.size() == 1);
+      auto s2 = as<val::string_t>(v);
+      EXPECT(s == s2);
 
       v = {};
       EXPECT(is_null(v));
