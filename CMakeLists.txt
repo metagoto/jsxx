@@ -15,6 +15,7 @@ endmacro()
 enable_testing()
 
 create_test(val val.cpp)
+create_test(map_val map_val.cpp)
 
 create_test(strings strings.cpp)
 
