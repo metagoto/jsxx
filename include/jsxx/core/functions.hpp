@@ -383,6 +383,14 @@ namespace jsxx
   }
 
 
+  // generic cast/conversion
+  template<typename R, typename T>
+  inline R as(basic_val<T> const& v) {
+    return internal::access<basic_val<T> const, internal::cast_tag, R>::cast(v);
+  }
+
+
+
   namespace internal {
 
     struct container_tag {};

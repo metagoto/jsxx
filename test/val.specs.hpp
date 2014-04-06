@@ -651,7 +651,7 @@ lest::test const specs[] =
       v = "s";
       b = v;
       EXPECT(b == true);
-      val::string_t s = v;
+      val::string_t s = (val::string_t)v;
       EXPECT(s.size() == 1);
 
       v = {};
@@ -659,30 +659,35 @@ lest::test const specs[] =
       v = empty::array;
       b = v;
       EXPECT(b == false);
+      auto a = as<val::array_t>(v);
+      EXPECT(a.size() == 0);
       v[0] = 0;
       b = v;
       EXPECT(b == true);
-      val::array_t a = v;
+      a = as<val::array_t>(v);
+      EXPECT(a.size() == 1);
       a = get<val::array_t>(v);
       EXPECT(a.size() == 1);
 
       v = empty::object;
       b = v;
       EXPECT(b == false);
-      val::object_t o = v;
+      auto o = as<val::object_t>(v);
       EXPECT(o.size() == 0);
       v["k"] = 0;
       b = v;
       EXPECT(b == true);
+      o = as<val::object_t>(v);
+      EXPECT(o.size() == 1);
       o = get<val::object_t>(v);
       EXPECT(o.size() == 1);
     }
     {
       val v = "hello";
-      [](char const* s){ EXPECT(std::string("hello") == s); }(v);
+      [](char const* s){ EXPECT(std::string("hello") == s); }((char const*)v);
 
       v = 1;
-      EXPECT_THROWS(([](char const* s){ EXPECT(std::string("hello") == s); }(v), true));
+      EXPECT_THROWS(([](char const* s){ EXPECT(std::string("hello") == s); }((char const*)v), true));
 
     }
   }},

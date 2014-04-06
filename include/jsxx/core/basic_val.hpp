@@ -84,8 +84,8 @@ namespace jsxx
     self_t const& operator[](char_t const(&)[N]) const;
 
     template<typename T>
-    operator T() const;
-    operator char_t const*() const;
+    explicit operator T() const;
+    explicit operator char_t const*() const;
     operator bool() const noexcept;
 
     iterator begin();

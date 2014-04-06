@@ -16,16 +16,18 @@
 
 using namespace jsxx;
 
-template<typename Val>
-struct trait<Val, struct map_val_tag> {
-  using bool_t = bool;
-  using int_t = int;
-  using real_t = double;
-  using string_t = std::string;
-  using pair_t = std::pair<string_t, Val>;
-  using array_t = std::vector<Val>;
-  using object_t = std::map<string_t, Val>;
-};
+namespace jsxx {
+  template<typename Val>
+  struct trait<Val, struct map_val_tag> {
+    using bool_t = bool;
+    using int_t = int;
+    using real_t = double;
+    using string_t = std::string;
+    using pair_t = std::pair<string_t, Val>;
+    using array_t = std::vector<Val>;
+    using object_t = std::map<string_t, Val>;
+  };
+}
 
 using val = basic_val<map_val_tag>;
 
