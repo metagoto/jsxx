@@ -8,11 +8,10 @@
 
 
 using namespace jsxx;
-
+using namespace jsxx::val_literals;
 
 static_assert(std::is_nothrow_move_constructible<val>::value,"");
 static_assert(std::is_nothrow_move_assignable<val>::value,"");
-
 
 
 lest::test const specs[] =

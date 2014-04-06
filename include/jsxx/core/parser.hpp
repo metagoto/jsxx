@@ -172,7 +172,7 @@ namespace jsxx
             auto const& t = tokens[start++];
             typename val_t::string_t str;
             if (decode_handler<val_t>::key_string(t.begin(), t.end(), str) == 0)
-              ro[i] = std::move(typename val_t::pair_t(std::move(str), build(start))); // TODO: swap
+              object_push(ro, typename val_t::pair_t(std::move(str), build(start)), i);
             else {
               error = -1;
               break;
@@ -200,6 +200,26 @@ namespace jsxx
       if (error)
         throw parse_error("could not convert to native type"); // TODO: explicit
       return nullptr;
+    }
+
+    ////
+
+    template<typename C, typename V, typename I>
+    inline void object_push_impl(C& c, V&& v, I&&, internal::assoc) {
+      c.emplace(std::move(v));
+    }
+
+    template<typename C, typename V, typename I>
+    inline void object_push_impl(C& c, V&& v, I&& i, internal::not_assoc) {
+      c[i] = std::move(v);
+    }
+
+    template<typename C, typename V, typename I>
+    inline void object_push(C& c, V&& v, I&& i) {
+      object_push_impl(c, std::forward<V>(v), std::forward<I>(i)
+                      ,typename std::conditional<
+                         internal::has_assoc_object<T>::value
+                        ,internal::assoc, internal::not_assoc>::type());
     }
 
     context_t ctx_;

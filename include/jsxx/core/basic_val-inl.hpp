@@ -69,8 +69,16 @@ namespace jsxx
     : type_(json::array), a_(v) {}
 
   template<typename T>
-  constexpr inline basic_val<T>::basic_val(empty::object_t, std::size_t const& v)
+  template<typename U>
+  constexpr inline basic_val<T>::basic_val(empty::object_t, std::size_t const& v
+    , typename std::enable_if<!internal::has_assoc_object<U>::value>::type*)
     : type_(json::object), o_(v) {}
+
+  template<typename T>
+  template<typename U>
+  constexpr inline basic_val<T>::basic_val(empty::object_t, std::size_t const&
+    , typename std::enable_if<internal::has_assoc_object<U>::value>::type*)
+    : type_(json::object), o_(/*v*/) {}
 
   template<typename T>
   constexpr inline basic_val<T>::basic_val(string_t&& v) noexcept
@@ -175,19 +183,12 @@ namespace jsxx
     return a_[i];
   }
 
-
   template<typename T>
   inline basic_val<T>& basic_val<T>::operator[](string_t const& s)
   {
     if (!is_object(*this))
       throw type_error("basic_val is not an object");
-    auto it = std::find_if(o_.begin(), o_.end(), [&s](pair_t const& p){
-      return p.first == s;
-    });
-    if (it != o_.end())
-      return it->second;
-    o_.push_back(pair_t(s, self_t(nullptr))); // null_type() ??
-    return o_.back().second;
+    return internal::access<self_t, internal::subscript_tag>::sub(*this, s);
   }
 
   template<typename T>
@@ -195,12 +196,7 @@ namespace jsxx
   {
     if (!is_object(*this))
       throw type_error("basic_val is not an object");
-    auto it = std::find_if(o_.begin(), o_.end(), [&s](pair_t const& p){
-      return p.first == s;
-    });
-    if (it != o_.end())
-      return it->second;
-    throw range_error(s);
+    return internal::access<self_t const, internal::subscript_tag>::sub(*this, s);
   }
 
   template<typename T>

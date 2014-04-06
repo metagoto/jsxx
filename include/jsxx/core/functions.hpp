@@ -417,6 +417,7 @@ namespace jsxx
         return false;
       }
 
+      //TODO: specialize for assoc object
       template<typename U>
       static auto find(U&& v, typename T::char_t const* key) -> decltype(v.o_.end()) {
         ensure(v, json::object);
@@ -493,6 +494,66 @@ namespace jsxx
     throw type_error("index is not convertible to an integer");
   }
 
+
+  namespace internal
+  {
+
+    struct subscript_tag {};
+
+    template<typename T>
+    struct access<T, subscript_tag>
+    {
+      using string_t = typename T::string_t;
+      using pair_t = typename T::pair_t;
+
+      static T& sub_impl(T& v, string_t const& s, assoc) {
+        return v.o_[s];
+      }
+
+      static T& sub_impl(T& v, string_t const& s, not_assoc) {
+        auto it = std::find_if(v.o_.begin(), v.o_.end(), [&s](pair_t const& p){
+          return p.first == s;
+        });
+        if (it != v.o_.end())
+          return it->second;
+        v.o_.push_back(pair_t(s, T(nullptr)));
+        return v.o_.back().second;
+      }
+
+      static T& sub(T& v, string_t const& s) {
+        return sub_impl(v, s
+          ,typename std::conditional<has_assoc_object<T>::value, assoc, not_assoc>::type());
+      }
+    };
+
+    template<typename T>
+    struct access<T const, subscript_tag>
+    {
+      using string_t = typename T::string_t;
+      using pair_t = typename T::pair_t;
+
+      static T const& sub_impl(T const& v, string_t const& s, assoc) {
+        auto it = v.o_.find(s);
+        if (it != v.o_.end())
+          return it->second;
+        throw range_error(s);
+      }
+
+      static T const& sub_impl(T const& v, string_t const& s, not_assoc) {
+        auto it = std::find_if(v.o_.begin(), v.o_.end(), [&s](pair_t const& p){
+          return p.first == s;
+        });
+        if (it != v.o_.end())
+          return it->second;
+        throw range_error(s);
+      }
+
+      static T const& sub(T const& v, string_t const& s) {
+        return sub_impl(v, s
+          ,typename std::conditional<has_assoc_object<T>::value, assoc, not_assoc>::type());
+      }
+    };
+  }
 
 }
 

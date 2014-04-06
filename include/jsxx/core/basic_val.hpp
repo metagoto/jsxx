@@ -42,7 +42,13 @@ namespace jsxx
     constexpr basic_val(empty::array_t);
     constexpr basic_val(empty::object_t);
     constexpr basic_val(empty::array_t, std::size_t const&);
-    constexpr basic_val(empty::object_t, std::size_t const&);
+
+    template<typename T = self_t>
+    constexpr basic_val(empty::object_t, std::size_t const&
+                       ,typename std::enable_if<internal::has_assoc_object<T>::value>::type* = 0);
+    template<typename T = self_t>
+    constexpr basic_val(empty::object_t, std::size_t const&
+                       ,typename std::enable_if<!internal::has_assoc_object<T>::value>::type* = 0);
 
     constexpr basic_val(string_t&&) noexcept;
     constexpr basic_val(array_t&&) noexcept;

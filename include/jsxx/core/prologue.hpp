@@ -1,5 +1,6 @@
 #pragma once
 
+#include <jsxx/core/meta.hpp>
 #include <jsxx/core/exceptions.hpp>
 #include <initializer_list>
 #include <type_traits>
@@ -44,6 +45,9 @@ namespace jsxx {
 
   namespace internal {
     template<typename, typename, typename = void> struct access;
+
+    struct assoc {};
+    struct not_assoc {};
   }
 
   namespace grammar {
