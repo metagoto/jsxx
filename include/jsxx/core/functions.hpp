@@ -53,6 +53,33 @@ namespace jsxx
 
   namespace internal
   {
+    template<typename T>
+    inline void ensure(basic_val<T> const& v, json type) {
+      if (v.type() != type)
+        throw type_error("wrong json type");
+    }
+
+    namespace {
+      template<typename T>
+      inline bool ensure_any_impl(basic_val<T> const&) {
+        return false;
+      }
+
+      template<typename T, typename... Type>
+      inline bool ensure_any_impl(basic_val<T> const& v, json type, Type... types) {
+        return v.type() == type || ensure_any_impl(v, types...);
+      }
+    }
+
+    template<typename T, typename... Type>
+    inline void ensure_any(basic_val<T> const& v, Type... types) {
+      ensure_any_impl(v, types...) || (throw type_error("wrong json type"), false);
+    }
+  }
+
+
+  namespace internal
+  {
     namespace {
       template<typename T, typename U>
       using cqual = typename std::conditional<std::is_const<T>::value, U const, U>::type;
@@ -344,7 +371,7 @@ namespace jsxx
     return as_real(v);
   }
 
-  namespace internal
+  namespace internal //TODO: merge as_blah() with access<T,cast_tag,U>. + specialization
   {
     struct cast_tag {};
     template<typename T, typename U>
@@ -366,20 +393,6 @@ namespace jsxx
           ,typename std::conditional<std::is_arithmetic<U>::value, arith, not_arith>::type());
       }
     };
-
-
-    template<typename T>
-    inline void ensure(basic_val<T> const& v, json type) {
-      if (v.type() != type)
-        throw type_error("wrong value type");
-    }
-
-    template<typename T>
-    inline void ensure_any(basic_val<T> const& v, json type1, json type2) {
-      if (v.type() != type1 && v.type() != type2)
-        throw type_error("wrong value type");
-    }
-
   }
 
 
