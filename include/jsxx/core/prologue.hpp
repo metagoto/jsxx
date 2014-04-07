@@ -16,7 +16,7 @@ namespace jsxx {
 
   template<typename Self, typename Tag> struct trait;
 
-  enum struct json : char {
+  enum struct json /*: char*/ {
     null,
     boolean,
     integer,

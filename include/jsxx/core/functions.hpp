@@ -80,6 +80,32 @@ namespace jsxx
 
   namespace internal
   {
+    template<typename T, typename R>
+    struct json_type_for {
+      using r = typename std::decay<R>::type;
+      using ts = typename T::types_t;
+      using u = std::underlying_type<json>::type;
+      static constexpr const int i = meta::index_of<r, ts>::value;
+      static_assert(i >= 0, "");
+      static constexpr const auto d = static_cast<u>(json::null) + static_cast<u>(i);
+      static constexpr const json value = static_cast<json>(d);
+    };
+
+    template<json J>
+    struct json_index {
+      using u = std::underlying_type<json>::type;
+      static constexpr const auto value = static_cast<u>(J);
+    };
+
+    template<typename T, typename R>
+    struct json_index_for {
+      static constexpr const auto value = json_index<json_type_for<T, R>::value>::value;
+    };
+  }
+
+
+  namespace internal
+  {
     namespace {
       template<typename T, typename U>
       using cqual = typename std::conditional<std::is_const<T>::value, U const, U>::type;
@@ -87,60 +113,37 @@ namespace jsxx
 
     struct get_tag {};
 
-    template<typename T>
-    struct access<T, get_tag, typename T::bool_t> {
-      static cqual<T, typename T::bool_t>* get(T& v) noexcept {
-        if (v.type() == json::boolean)
-          return &v.b_;
-        return nullptr;
+    template<typename T, typename R>
+    struct access<T, get_tag, R> {
+      using r = typename std::decay<R>::type;
+      static constexpr const auto i = json_index_for<T, r>::value;
+      static_assert(i > 0 && i < 7, "");
+      using cr = cqual<T, r>;
+      static cr* get(T& v) noexcept {
+        switch (i) {
+          case 1: return reinterpret_cast<cr*>(&v.b_);
+          case 2: return reinterpret_cast<cr*>(&v.i_);
+          case 3: return reinterpret_cast<cr*>(&v.r_);
+          case 4: return reinterpret_cast<cr*>(&v.s_);
+          case 5: return reinterpret_cast<cr*>(&v.a_);
+          case 6: return reinterpret_cast<cr*>(&v.o_);
+          default: return nullptr;
+        }
       }
     };
-    template<typename T>
-    struct access<T, get_tag, typename T::int_t> {
-      static cqual<T, typename T::int_t>* get(T& v) noexcept {
-        if (v.type() == json::integer)
-          return &v.i_;
-        return nullptr;
-      }
-    };
-    template<typename T>
-    struct access<T, get_tag, typename T::real_t> {
-      static cqual<T, typename T::real_t>* get(T& v) noexcept {
-        if (v.type() == json::real)
-          return &v.r_;
-        return nullptr;
-      }
-    };
-    template<typename T>
-    struct access<T, get_tag, typename T::string_t> {
-      static cqual<T, typename T::string_t>* get(T& v) noexcept {
-        if (v.type() == json::string)
-          return &v.s_;
-        return nullptr;
-      }
-    };
-    template<typename T>
-    struct access<T, get_tag, typename T::array_t> {
-      static cqual<T, typename T::array_t>* get(T& v) noexcept {
-        if (v.type() == json::array)
-          return &v.a_;
-        return nullptr;
-      }
-    };
-    template<typename T>
-    struct access<T, get_tag, typename T::object_t> {
-      static cqual<T, typename T::object_t>* get(T& v) noexcept {
-        if (v.type() == json::object)
-          return &v.o_;
-        return nullptr;
-      }
-    };
-  }
 
+    template<typename R, typename T>
+    inline /*constexpr*/ cqual<T, typename std::decay<R>::type>* get(T& v) noexcept {
+      constexpr const auto t = json_type_for<T, R>::value;
+      if (v.type() == t)
+        return access<T, get_tag, R>::get(v);
+      return nullptr;
+    }
+  }
 
   template<typename R, typename T>
   inline R& get(basic_val<T>& v) {
-    R* r = internal::access<basic_val<T>, internal::get_tag, R>::get(v);
+    R* r = internal::get<R>(v);
     if (r)
       return *r;
     throw type_error("wrong type");
@@ -148,7 +151,7 @@ namespace jsxx
 
   template<typename R, typename T>
   inline R const& get(basic_val<T> const& v) {
-    R const* r = internal::access<basic_val<T> const, internal::get_tag, R>::get(v);
+    R const* r = internal::get<R>(v);
     if (r)
       return *r;
     throw type_error("wrong type");
@@ -156,12 +159,12 @@ namespace jsxx
 
   template<typename R, typename T>
   inline R* get(basic_val<T>* v) noexcept {
-    return v ? internal::access<basic_val<T>, internal::get_tag, R>::get(*v) : nullptr;
+    return v ? internal::get<R>(*v) : nullptr;
   }
 
   template<typename R, typename T>
   inline R const* get(basic_val<T> const* v) noexcept {
-    return v ? internal::access<basic_val<T> const, internal::get_tag, R>::get(*v) : nullptr;
+    return v ? internal::get<R>(*v) : nullptr;
   }
 
 

@@ -14,6 +14,7 @@ endmacro()
 
 enable_testing()
 
+create_test(meta meta.cpp)
 create_test(val val.cpp)
 create_test(map_val map_val.cpp)
 

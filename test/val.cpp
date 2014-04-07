@@ -2,7 +2,7 @@
 #include <iostream>
 #include <jsxx/val.hpp>
 #include <jsxx/reader.hpp>
-#include <jsxx/writer.hpp>
+///#include <jsxx/writer.hpp>
 #include <cstring>
 #include "lest.hpp"
 

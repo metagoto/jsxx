@@ -16,7 +16,7 @@ namespace jsxx
       case json::null:
         o << "null"; break;
       case json::boolean:
-        o << (get<typename basic_val<Tag>::bool_t>(v) ? "true" : "false"); break;
+        o << (/*get<typename basic_val<Tag>::bool_t>(v)*/(bool)v ? "true" : "false"); break;
       case json::integer:
         o << get<typename basic_val<Tag>::int_t>(v); break;
       case json::real:

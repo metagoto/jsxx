@@ -12,15 +12,18 @@ namespace jsxx
     using tag_t = Tag;
     using self_t = basic_val<Tag>;
 
+    using bool_t = typename trait<self_t, Tag>::bool_t;
     using int_t = typename trait<self_t, Tag>::int_t;
     using real_t = typename trait<self_t, Tag>::real_t;
-    using bool_t = typename trait<self_t, Tag>::bool_t;
     using string_t = typename trait<self_t, Tag>::string_t;
     using array_t = typename trait<self_t, Tag>::array_t;
     using object_t = typename trait<self_t, Tag>::object_t;
     using pair_t = typename trait<self_t, Tag>::pair_t;
     using char_t = typename string_t::value_type;
     using null_t = std::nullptr_t;
+
+    using types_t = meta::typelist<null_t, bool_t, int_t, real_t, string_t, array_t, object_t>;
+    //static_assert(!meta::has_duplicate<types_t>::value, "");
 
     using iterator = typename array_t::iterator;
     using const_iterator = typename array_t::const_iterator;
