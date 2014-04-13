@@ -117,7 +117,7 @@ namespace jsxx
     struct access<T, get_tag, R> {
       using r = typename std::decay<R>::type;
       static constexpr const auto i = json_index_for<T, r>::value;
-      static_assert(i > 0 && i < 7, "");
+      static_assert(i > 0 && i < 7, "you don't want to do that. do you?");
       using cr = cqual<T, r>;
       static cr* get(T& v) noexcept {
         switch (i) {
@@ -420,6 +420,7 @@ namespace jsxx
       }
 
       static bool in(T const& v, typename T::char_t const* key) {
+        ensure(v, json::object);
         return find(v, key) != v.o_.end();
       }
 
@@ -433,6 +434,7 @@ namespace jsxx
       }
 
       static bool del(T& v, typename T::char_t const* key) {
+        ensure(v, json::object);
         auto it = find(v, key);
         if (it != v.o_.end()) {
           v.o_.erase(it);
@@ -442,9 +444,8 @@ namespace jsxx
       }
 
       //TODO: specialize for assoc object
-      template<typename U>
-      static auto find(U&& v, typename T::char_t const* key) -> decltype(v.o_.end()) {
-        ensure(v, json::object);
+      template<typename V>
+      static auto find(V&& v, typename T::char_t const* key) -> decltype(v.o_.end()) {
         return std::find_if(v.o_.begin(), v.o_.end(), [&key](typename T::pair_t const& p){
           return p.first == key;
         });

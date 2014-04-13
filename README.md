@@ -1,7 +1,8 @@
-jsxx
+jsxx [![Build Status](https://drone.io/github.com/metagoto/jsxx/status.png)](https://drone.io/github.com/metagoto/jsxx/latest)
 ====
 
-A C++ header only JSON library, the C++11 way (well, kinda).
+A C++ header-only JSON library, the C++11 way (well, kinda).
+
 
 The #1 goal is to mimic the JSON syntax as close as possible straight into your C++ code.
 
@@ -36,6 +37,9 @@ Quick example:
 #include <jsxx/writer.hpp>
 
 using namespace jsxx;
+
+// import val's literal _k into current namespace
+using namespace jsxx::val_literals;
 
 int main() {
 

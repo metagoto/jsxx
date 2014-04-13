@@ -468,8 +468,6 @@ lest::test const specs[] =
        auto b = get_real(&v);
        EXPECT(!b);
      }
-
-
   }},
 
   {"object", [] {

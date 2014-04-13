@@ -109,7 +109,7 @@ lest::test const specs[] =
   }},
   {"tmp", [] {
     //val v = 1;
-    //auto i = get<float>(v);
+    //auto i = get<val::null_t>(v);
 
   }}
 };

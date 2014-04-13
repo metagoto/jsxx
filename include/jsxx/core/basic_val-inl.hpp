@@ -2,9 +2,6 @@
 
 #include <jsxx/core/prologue.hpp>
 #include <jsxx/core/functions.hpp>
-//
-//#include <jsxx/core/basic_val.hpp>
-//
 
 
 namespace jsxx
