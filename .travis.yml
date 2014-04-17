@@ -1,0 +1,17 @@
+language: cpp
+
+compiler:
+  - gcc
+  - clang
+
+env:
+  - CTEST_OUTPUT_ON_FAILURE=1
+
+script:
+  - rm -rf build
+  - mkdir build
+  - cd build
+  - cmake ..
+  - make
+  - make test
+  - cd ..
