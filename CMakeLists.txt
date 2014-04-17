@@ -4,9 +4,9 @@ project(jsxx)
 
 set(CMAKE_CXX_FLAGS "-std=c++11 -Wall -Wfatal-errors -Wextra -pedantic -O3 -DNDEBUG")
 
-if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
-endif()
+#if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+#  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+#endif()
 
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
