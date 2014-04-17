@@ -1,7 +1,7 @@
-jsxx [![Build Status](https://drone.io/github.com/metagoto/jsxx/status.png)](https://drone.io/github.com/metagoto/jsxx/latest)
+jsxx [![Build Status](https://drone.io/github.com/metagoto/jsxx/status.png)](https://drone.io/github.com/metagoto/jsxx/latest) [![Build Status](https://travis-ci.org/metagoto/jsxx.svg?branch=master)](https://travis-ci.org/metagoto/jsxx)
 ====
 
-A C++ header-only JSON library, the C++11 way (well, kinda).
+A C++11 header-only JSON library.
 
 
 The #1 goal is to mimic the JSON syntax as close as possible straight into your C++ code.
@@ -26,7 +26,7 @@ This is what jsxx does. It relies on a bunch of C++11 features, hence a recent C
 Usage
 -----
 
-The library is header only. No need to build anything. To use it in you project, make your compiler aware of the jsxx include path (`-I/path/to/jsxx/include`) and enable the C++11 support with `-std=c++11` for clang or gcc.
+The library is header-only. No need to build anything. To use it in you project, make your compiler aware of the jsxx include path (`-I/path/to/jsxx/include`) and enable the C++11 support with `-std=c++11` for clang or gcc.
 
 Quick example:
 
